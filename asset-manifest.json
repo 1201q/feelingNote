@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/feelingNote/static/css/main.70299b50.css",
+    "main.js": "/feelingNote/static/js/main.a649834a.js",
+    "static/media/crying.png": "/feelingNote/static/media/crying.c0dc0764adb658bf158f.png",
+    "static/media/night-mode.png": "/feelingNote/static/media/night-mode.a296e8639091096979a5.png",
+    "static/media/smile (1).png": "/feelingNote/static/media/smile (1).16907f147c5a3ae747d6.png",
+    "static/media/smile.png": "/feelingNote/static/media/smile.2fcaab276d09dd375ff7.png",
+    "static/media/sleeping.png": "/feelingNote/static/media/sleeping.e0bdb71b8092b4800b7e.png",
+    "static/media/grinning.png": "/feelingNote/static/media/grinning.4b40be6b9363c041e149.png",
+    "static/media/angry.png": "/feelingNote/static/media/angry.30057d085d97bd45c22a.png",
+    "static/media/crying (1).png": "/feelingNote/static/media/crying (1).1923e244650177ea3739.png",
+    "static/media/neutral.png": "/feelingNote/static/media/neutral.fefa8fab38a0b02e6e73.png",
+    "static/media/logo1.png": "/feelingNote/static/media/logo1.6793de35f4426a096a10.png",
+    "static/media/logo2.png": "/feelingNote/static/media/logo2.95dc04b2794c674fddc7.png",
+    "static/media/sun.png": "/feelingNote/static/media/sun.5915bafe96323dadfc76.png",
+    "static/media/logo3.png": "/feelingNote/static/media/logo3.78af34635504ebceec90.png",
+    "index.html": "/feelingNote/index.html",
+    "main.70299b50.css.map": "/feelingNote/static/css/main.70299b50.css.map",
+    "main.a649834a.js.map": "/feelingNote/static/js/main.a649834a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.70299b50.css",
+    "static/js/main.a649834a.js"
+  ]
+}
