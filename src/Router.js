@@ -7,15 +7,17 @@ export default function Root({ isLoggedIn }) {
   return (
     <Router>
       <Switch>
-        {isLoggedIn ? (
-          <Route>
-            <Home />
-          </Route>
-        ) : (
-          <Route>
-            <Auth />
-          </Route>
-        )}
+        <>
+          {isLoggedIn ? (
+            <Route>
+              <Home />
+            </Route>
+          ) : (
+            <Route>
+              <Auth />
+            </Route>
+          )}
+        </>
       </Switch>
     </Router>
   );

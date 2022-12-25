@@ -23,26 +23,20 @@ const DrugInfo = ({
   const [dayBtn, setDayBtn] = useState(Day);
   const [nightBtn, setNightBtn] = useState(Night);
 
-  const returnFilterDrugData = () => {
-    return DrugData.filter(
-      (item) => item.dateID === dayjs().format("YYYY-M-D")
-    )[0];
-  };
-
   const dayAndNightChange = async (e) => {
     e.preventDefault();
     setStopwatchTime(dayjs().format());
     if (e.target.name === "day") {
       setDayBtn(!dayBtn);
       if (dayBtn === false) {
-        await dbService.doc(`드러그/${returnFilterDrugData().id}`).update({
+        await dbService.doc(`드러그/${DrugData.id}`).update({
           day: true,
           whenEatDrugAtDay: dayjs(stopwatchTime).format(),
         });
 
         // 기록
       } else {
-        await dbService.doc(`드러그/${returnFilterDrugData().id}`).update({
+        await dbService.doc(`드러그/${DrugData.id}`).update({
           day: false,
           whenEatDrugAtDay: "",
         });
@@ -52,13 +46,13 @@ const DrugInfo = ({
     } else if (e.target.name === "night") {
       setNightBtn(!nightBtn);
       if (nightBtn === false) {
-        await dbService.doc(`드러그/${returnFilterDrugData().id}`).update({
+        await dbService.doc(`드러그/${DrugData.id}`).update({
           night: true,
           whenEatDrugAtNight: dayjs(stopwatchTime).format(),
         });
         // 기록
       } else {
-        await dbService.doc(`드러그/${returnFilterDrugData().id}`).update({
+        await dbService.doc(`드러그/${DrugData.id}`).update({
           night: false,
           whenEatDrugAtNight: "",
         });

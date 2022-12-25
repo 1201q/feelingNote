@@ -5,50 +5,29 @@ import { dbService, authService } from "./fbase";
 import useInterval from "./hooks/useInterval";
 import ProgressBar from "@ramonak/react-progress-bar";
 import DrugInfo from "./DrugInfo";
-
+import Feeling from "./Feeling";
 import { motion, AnimatePresence } from "framer-motion";
+import Header from "./Header";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
 function Home() {
-  const emojiArray = [
-    "crying",
-    "crying (1)",
-    "smile",
-    "smile (1)",
-    "grinning",
-    "neutral",
-    "angry",
-  ];
+  // 전체 드러그, 필링 데이터 예정/////////////
+  // => 전체 목록 보기 위해 필요
 
-  const [time, setTime] = useState(dayjs().format());
-  const [stopwatchTime, setStopwatchTime] = useState(dayjs().format());
-  const [dayProgress, setDayProgress] = useState(0);
-  const [text, setText] = useState("");
-  const [feelingData, setFeelingData] = useState([]);
-  const [feelingtodayData, setFeelingtodayData] = useState([]);
-  const [drugData, setDrugData] = useState([]);
-  const [currentEmoji, setCurrentEmoji] = useState(emojiArray[4]);
+  // '오늘' 드러그, 필링 데이터 (배열)
+  const [todayDrugData, setTodayDrugData] = useState([]);
+  const [todayFeelingData, setTodayFeelingData] = useState([]);
 
+  // 드러그 데이터의 on off
   const [day, setDay] = useState(false);
   const [night, setNight] = useState(false);
+
+  // 드러그 데이터의 기록 시간과 로딩
   const [dayTime, setDaytime] = useState("");
   const [nightTime, setNighttime] = useState("");
   const [drugloading, setDrugLoading] = useState(false);
-
-  //달력 만드는데씀
-  const [current, setCurrent] = useState(dayjs());
-  const [currentMonthOfdays, setCurrentMonthOfdays] = useState([]);
-
-  useInterval(() => {
-    setStopwatchTime(dayjs().format());
-
-    if (dayProgress < 100) {
-      returnProgressPercent(dayProgress);
-    }
-    // console.log(stopwatchTime);
-  }, 1000);
 
   useEffect(() => {
     setDrugLoading(false);
@@ -60,13 +39,13 @@ function Home() {
           id: doc.id,
           ...doc.data(),
         }));
-        setFeelingData(array);
-        setFeelingtodayData(
-          array.filter(
-            (data) =>
-              dayjs(data.time).format("YYYY-M-D") === dayjs().format("YYYY-M-D")
-          )
+        // 모든 데이터 불러와
+        let todayData = array.filter(
+          (data) =>
+            dayjs(data.time).format("YYYY-M-D") === dayjs().format("YYYY-M-D")
         );
+        //오늘자의 데이터만 필터링하기
+        setTodayFeelingData(todayData);
       });
 
     dbService
@@ -77,36 +56,35 @@ function Home() {
           id: doc.id,
           ...doc.data(),
         }));
-        dataSetInit(array);
+
+        // 드러그 데이터의 중복 생성 방지
+        returnTodayrDrugData(array);
       });
-    ca();
   }, []);
 
-  const dataSetInit = (array) => {
-    const returnFilterDrugData = () => {
-      return array.filter(
-        (item) => item.dateID === dayjs().format("YYYY-M-D")
-      )[0];
-    };
-
-    if (
-      array.filter((item) => item.dateID === dayjs().format("YYYY-M-D"))
-        .length === 0
-    ) {
-      //초기설정해야됨
+  const returnTodayrDrugData = (array) => {
+    // 오늘자의 드러그 데이터만 필터링 반환
+    let returnTodayData = array.filter(
+      (item) => item.dateID === dayjs().format("YYYY-M-D")
+    )[0];
+    if (returnTodayData.length === 0) {
+      // 오늘 약이 기록되지 않아 기본 데이터 생성
       drugInit();
-      console.log("초기설정!");
     } else {
-      setDrugData(array);
-      setDay(returnFilterDrugData().day);
-      setNight(returnFilterDrugData().night);
-      setDaytime(returnFilterDrugData().whenEatDrugAtDay);
-      setNighttime(returnFilterDrugData().whenEatDrugAtNight);
-      setDrugLoading(true);
+      // 오늘 기록된 약이 있으므로 기존 데이터 불러오기
+      setTodayDrugData(returnTodayData);
+      setDay(returnTodayData.day);
+      setNight(returnTodayData.night);
+      setDaytime(returnTodayData.whenEatDrugAtDay);
+      setNighttime(returnTodayData.whenEatDrugAtNight);
+      setDrugLoading(true); // true 로딩끝
     }
   };
 
   const drugInit = async () => {
+    // 오늘 드러그 데이터가 없으므로 최초 생성
+    // 중복 방지를 위해 필요
+
     const drugData = {
       dateID: dayjs().format("YYYY-M-D"),
       day: false,
@@ -118,224 +96,71 @@ function Home() {
     await dbService.collection(`드러그`).add(drugData);
   };
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const submitData = {
-      time: dayjs(stopwatchTime).format(),
-      text: text,
-      feeling: currentEmoji,
-    };
-
-    await dbService.collection(`테스트`).add(submitData);
-    setText("");
-  };
-
-  const onChange = (e) => {
-    if (e.target.name === "text") {
-      setText(e.target.value);
-    } else if (e.target.name === "time") {
-      setTime(e.target.value);
-    }
-  };
-
-  const returnProgressPercent = () => {
-    let hour = dayjs(stopwatchTime).get("hour");
-    let min = dayjs(stopwatchTime).get("minutes");
-    let cal = hour * 60 + min;
-    let result = ((cal / 1440) * 100).toFixed(2);
-    setDayProgress(((cal / 1440) * 100).toFixed(2));
-
-    return result;
-  };
-
-  const ca = (plusOrMinus = current) => {
-    let endOFmonth = Number(plusOrMinus.endOf("month").format("D"));
-    const grid = Array(endOFmonth)
-      .fill()
-      .map((arr, i) => {
-        return i + 1;
-      });
-
-    setCurrentMonthOfdays(grid);
-  };
-
-  const onLogOutClick = () => {
-    authService.signOut();
-  };
-
   return (
-    <div className="App">
-      {/* 회색 */}
-
-      <Header>
-        <HeaderDiv>
-          <img src={require("./icons/logo3.png")} width={"140px"} />{" "}
-        </HeaderDiv>
-      </Header>
-
-      <AddBar>
-        <AddBarDiv bgColor="white">
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <p>{dayjs(stopwatchTime).format("HH시 mm분 ss초")}</p>
-            <LogOutBtn onClick={onLogOutClick}>로그아웃</LogOutBtn>
-          </div>
-          <form onSubmit={onSubmit}>
-            <input
-              type="text"
-              name="text"
-              onChange={onChange}
-              value={text}
-              placeholder="현재 기분은?"
-            />
-          </form>{" "}
-          <div
-            style={{
-              width: "100%",
-              marginBottom: "30px",
-            }}
-          >
-            <ProgressBar
-              completed={dayProgress}
-              width={"100%"}
-              height={"18px"}
-              borderRadius={"7px"}
-              customLabel={`${dayProgress}%`}
-              labelAlignment={"right"}
-              labelSize="13px"
-              bgColor={"#4448FF"}
-              baseBgColor={"#f2f4f6"}
-              transitionDuration={"0.7s"}
-              animateOnRender={true}
-              margin={"0px 0px 8px 0px"}
-            />
-          </div>
-          <SideabarDiv>
-            {emojiArray.map((item, index) => (
-              <SidebarEmojiBtn
-                style={{
-                  borderColor:
-                    emojiArray[index] === currentEmoji ? "#e0e0de" : "white",
-                }}
-                onClick={() => {
-                  console.log(emojiArray[index] === currentEmoji);
-                  console.log(index);
-                  console.log(currentEmoji);
-                  setCurrentEmoji(emojiArray[index]);
-                }}
-              >
-                <SidebarImg
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                  src={require(`./icons/${item}.png`)}
-                  width="30px"
-                />
-              </SidebarEmojiBtn>
-            ))}
-          </SideabarDiv>
-        </AddBarDiv>
-        {/*  */}
-        {drugloading ? (
-          <DrugInfo
-            DrugData={drugData}
-            drugloading={drugloading}
-            Day={day}
-            Night={night}
-            DayTime={dayTime}
-            NightTime={nightTime}
-          />
-        ) : (
-          <AddBarDiv
-            sibal="smooth"
-            bgColor="white"
-            style={{ marginBottom: "20px", paddingBottom: "29px" }}
-          ></AddBarDiv>
-        )}
-
+    <Main>
+      <Header />
+      <Feeling />
+      {drugloading ? (
+        <DrugInfo
+          DrugData={todayDrugData}
+          drugloading={drugloading}
+          Day={day}
+          Night={night}
+          DayTime={dayTime}
+          NightTime={nightTime}
+        />
+      ) : (
         <AddBarDiv
           sibal="smooth"
           bgColor="white"
-          style={{ alignItems: "flex-start" }}
+          style={{ marginBottom: "20px", paddingBottom: "29px" }}
+        ></AddBarDiv>
+      )}
+
+      <AddBarDiv
+        sibal="smooth"
+        bgColor="white"
+        style={{ alignItems: "flex-start" }}
+      >
+        <AddBarHeader>시간순</AddBarHeader>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-          <AddBarHeader>시간순</AddBarHeader>
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {feelingtodayData.map((data, index) => (
-              // 개별 컴포넌트
-              <TodayFeelingList
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  duration: 0.3,
-                  delay: index * 0.2,
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <img
-                    src={require(`./icons/${data.feeling}.png`)}
-                    width="30px"
-                    style={{ marginRight: "10px" }}
-                  />
-                  <p>{data.text}</p>
-                </div>
-                <TodayFeelingListTime>
-                  {dayjs(data.time).format("HH시 mm분")}
-                </TodayFeelingListTime>
-              </TodayFeelingList>
-            ))}
-          </div>
-        </AddBarDiv>
-      </AddBar>
-    </div>
+          {todayFeelingData.map((data, index) => (
+            // 개별 컴포넌트
+            <TodayFeelingList
+              key={index}
+              initial={{ y: 40, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{
+                duration: 0.3,
+                delay: index * 0.2,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src={require(`./icons/${data.feeling}.png`)}
+                  width="30px"
+                  style={{ marginRight: "10px" }}
+                />
+                <p>{data.text}</p>
+              </div>
+              <TodayFeelingListTime>
+                {dayjs(data.time).format("HH시 mm분")}
+              </TodayFeelingListTime>
+            </TodayFeelingList>
+          ))}
+        </div>
+      </AddBarDiv>
+    </Main>
   );
 }
 
-const LogOutBtn = styled.button`
-  border: none;
-  font-size: 7px;
-  width: 70px;
-  height: 20px;
-  cursor: pointer;
-  border-radius: 10px;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: 0px;
-`;
-
-const HeaderDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  width: 70%;
-  max-width: 940px;
-  height: 60px;
-  margin-right: 35px;
-  border-radius: 15px;
-
-  @media screen and (max-width: 768px) {
-    width: 90%;
-  }
-`;
-
-const AddBar = styled(motion.div)`
+const Main = styled(motion.div)`
   width: 100%;
   height: 100%;
   display: flex;
@@ -351,32 +176,6 @@ const AddBar = styled(motion.div)`
     font-size: 20px;
     text-align: left;
     font-weight: 500;
-  }
-
-  form {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-    margin-bottom: 15px;
-
-    input {
-      width: 100%;
-      padding: 12px 12px;
-      font-size: 25px;
-      font-weight: 200;
-      background: none;
-      border: none;
-      outline: none;
-      border-radius: 10px;
-      text-align: center;
-      color: #333d4b;
-      background-color: #f2f4f6;
-    }
-
-    input::placeholder {
-      font-weight: 200;
-    }
   }
 `;
 
@@ -469,42 +268,6 @@ const SidebarEmojiBtn = styled(motion.button)`
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
   border-bottom: 3px solid ${(props) => props.borderColor};
-`;
-
-const SidebarEmojiNormalBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: none;
-  padding: 0;
-  padding-right: 0.7px;
-  padding-bottom: 8px;
-
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-  border-bottom: 3px solid ${(props) => props.borderColor};
-`;
-
-const WrapVertical = styled.div`
-  width: 100%;
-
-  height: 70px;
-  overflow: auto;
-  white-space: nowrap;
-  overflow: scroll;
-
-  button {
-    width: 13%;
-    height: 50%;
-    border: none;
-    margin-right: 5px;
-    font-size: 21px;
-    font-weight: 100;
-    border-radius: 50%;
-    cursor: pointer;
-    background-color: white;
-  }
 `;
 
 export default Home;

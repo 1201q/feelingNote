@@ -11,14 +11,27 @@ const App = () => {
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
-      if (user) {
-        setIsLoggedIn(true);
+      if (!user) {
+        setIsLoggedIn(false);
+        setLoading(true);
+        return;
+      } else {
         setUserData({
           displayName: user.displayName,
           uid: user.uid,
         });
+      }
+
+      if (
+        user.uid === process.env.REACT_APP_GOOGLE_LOGIN_UID ||
+        user.uid === process.env.REACT_APP_GITHUB_LOGIN_UID
+      ) {
+        setIsLoggedIn(true);
+        console.log("허가된 계정");
       } else {
         setIsLoggedIn(false);
+        window.alert("허가된 계정이 아니에요.");
+        console.log("허가되지 않은 계정");
       }
       setLoading(true);
     });
@@ -31,7 +44,7 @@ const App = () => {
       ) : (
         <div
           style={{
-            marginTop: "50px",
+            marginTop: "100px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
