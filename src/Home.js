@@ -8,6 +8,7 @@ import DrugInfo from "./DrugInfo";
 import Feeling from "./Feeling";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "./Header";
+import FeelingList from "./FeelingList";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
@@ -19,6 +20,7 @@ function Home() {
   // '오늘' 드러그, 필링 데이터 (배열)
   const [todayDrugData, setTodayDrugData] = useState([]);
   const [todayFeelingData, setTodayFeelingData] = useState([]);
+  const [feelingloading, setFeelingLoading] = useState(false);
 
   // 드러그 데이터의 on off
   const [day, setDay] = useState(false);
@@ -31,6 +33,7 @@ function Home() {
 
   useEffect(() => {
     setDrugLoading(false);
+    setFeelingLoading(false);
     dbService
       .collection(`테스트`)
       .orderBy("time")
@@ -46,6 +49,7 @@ function Home() {
         );
         //오늘자의 데이터만 필터링하기
         setTodayFeelingData(todayData);
+        setFeelingLoading(true);
       });
 
     dbService
@@ -156,6 +160,7 @@ function Home() {
           ))}
         </div>
       </AddBarDiv>
+      <FeelingList todayFeelingData={todayFeelingData} />
     </Main>
   );
 }
@@ -176,6 +181,25 @@ const Main = styled(motion.div)`
     font-size: 20px;
     text-align: left;
     font-weight: 500;
+  }
+
+  input::placeholder {
+    font-weight: 200;
+  }
+
+  input {
+    font-family: "Pretendard-Regular";
+    width: 100%;
+    padding: 12px 12px;
+    font-size: 25px;
+    font-weight: 200;
+    background: none;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    text-align: center;
+    color: #333d4b;
+    background-color: #f2f4f6;
   }
 `;
 
@@ -202,7 +226,6 @@ const AddBarHeader = styled.div`
   width: 100%;
   color: #333d4b;
   font-size: 27px;
-
   margin-left: 0px;
   margin-bottom: 2px;
   text-align: left;
@@ -218,9 +241,7 @@ const TodayFeelingList = styled(motion.div)`
   padding: 13px 0px;
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-
   /* border-bottom: 0.6px solid rgb(214, 214, 214, 0.6); */
-
   p {
     display: flex;
     flex-wrap: wrap;
@@ -239,35 +260,6 @@ const TodayFeelingListTime = styled.div`
   margin-left: 2px;
   font-weight: 800;
   font-size: 13px;
-`;
-
-const SideabarDiv = styled.div`
-  width: 60%;
-  min-height: 42px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  @media screen and (max-width: 768px) {
-    width: 90%;
-  }
-`;
-
-const SidebarImg = styled(motion.img)``;
-
-const SidebarEmojiBtn = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: none;
-  padding: 0;
-  padding-right: 0.7px;
-  padding-bottom: 8px;
-
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-  border-bottom: 3px solid ${(props) => props.borderColor};
 `;
 
 export default Home;

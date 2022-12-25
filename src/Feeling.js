@@ -143,23 +143,7 @@ const FormDiv = styled.form`
   width: 100%;
   margin-bottom: 15px;
 
-  input::placeholder {
-    font-weight: 200;
-  }
-
-  input {
-    width: 100%;
-    padding: 12px 12px;
-    font-size: 25px;
-    font-weight: 200;
-    background: none;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    text-align: center;
-    color: #333d4b;
-    background-color: #f2f4f6;
-  }
+  /* Home 컴포넌트 Main에 input속성, p 속성 있음 */
 `;
 
 const ProgressBarDiv = styled.div`
