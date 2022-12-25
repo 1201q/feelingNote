@@ -1,5 +1,5 @@
 import React from "react";
-import { authService, firebaseInstance } from "./fbase";
+import { authService, firebaseInstance } from "../fbase";
 import styled from "styled-components";
 
 const Auth = () => {
@@ -14,7 +14,7 @@ const Auth = () => {
   };
   return (
     <AuthDiv>
-      <AuthImg src={require("./icons/logo31.png")} />
+      <AuthImg src={require("../icons/logo31.png")} />
       <AuthBtn onClick={loginGoogle}>Google 로그인</AuthBtn>
       <AuthBtn onClick={loginGithub}>Github 로그인</AuthBtn>
     </AuthDiv>
@@ -27,11 +27,11 @@ const AuthDiv = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 90vh;
 `;
 
 const AuthImg = styled.img`
-  margin-bottom: 90px;
+  margin-bottom: 50px;
   width: 200px;
 `;
 

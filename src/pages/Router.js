@@ -1,6 +1,6 @@
 import React from "react";
-import Home from "./Home";
-import Auth from "./Auth";
+import Home from ".//Home";
+import Auth from ".//Auth";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 
 export default function Root({ isLoggedIn }) {

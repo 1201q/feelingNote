@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import styled, { keyframes, css } from "styled-components";
+import styled from "styled-components";
 import dayjs from "dayjs";
-import { dbService, authService } from "./fbase";
-import useInterval from "./hooks/useInterval";
-import ProgressBar from "@ramonak/react-progress-bar";
-import DrugInfo from "./DrugInfo";
-import Feeling from "./Feeling";
-import { motion, AnimatePresence } from "framer-motion";
-import Header from "./Header";
-import FeelingList from "./FeelingList";
+import { dbService } from "../fbase";
+import { motion } from "framer-motion";
+import Header from "../Components/Header";
+import FeelingForm from "../Components/FeelingForm";
+import FeelingList from "../Components/FeelingList";
+import Drug from "../Components/Drug";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
@@ -23,8 +21,8 @@ function Home() {
   const [feelingloading, setFeelingLoading] = useState(false);
 
   // 드러그 데이터의 on off
-  const [day, setDay] = useState(false);
-  const [night, setNight] = useState(false);
+  const [dayOnOff, setDayOnOff] = useState(false);
+  const [nightOnOff, setNightOnOff] = useState(false);
 
   // 드러그 데이터의 기록 시간과 로딩
   const [dayTime, setDaytime] = useState("");
@@ -77,8 +75,8 @@ function Home() {
     } else {
       // 오늘 기록된 약이 있으므로 기존 데이터 불러오기
       setTodayDrugData(returnTodayData);
-      setDay(returnTodayData.day);
-      setNight(returnTodayData.night);
+      setDayOnOff(returnTodayData.day);
+      setNightOnOff(returnTodayData.night);
       setDaytime(returnTodayData.whenEatDrugAtDay);
       setNighttime(returnTodayData.whenEatDrugAtNight);
       setDrugLoading(true); // true 로딩끝
@@ -103,63 +101,19 @@ function Home() {
   return (
     <Main>
       <Header />
-      <Feeling />
+      <FeelingForm />
       {drugloading ? (
-        <DrugInfo
+        <Drug
           DrugData={todayDrugData}
-          drugloading={drugloading}
-          Day={day}
-          Night={night}
+          DayOnOff={dayOnOff}
+          NightOnOff={nightOnOff}
           DayTime={dayTime}
           NightTime={nightTime}
+          Drugloading={drugloading}
         />
       ) : (
-        <AddBarDiv
-          sibal="smooth"
-          bgColor="white"
-          style={{ marginBottom: "20px", paddingBottom: "29px" }}
-        ></AddBarDiv>
+        <LoadingDrug></LoadingDrug>
       )}
-
-      <AddBarDiv
-        sibal="smooth"
-        bgColor="white"
-        style={{ alignItems: "flex-start" }}
-      >
-        <AddBarHeader>시간순</AddBarHeader>
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          {todayFeelingData.map((data, index) => (
-            // 개별 컴포넌트
-            <TodayFeelingList
-              key={index}
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                duration: 0.3,
-                delay: index * 0.2,
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <img
-                  src={require(`./icons/${data.feeling}.png`)}
-                  width="30px"
-                  style={{ marginRight: "10px" }}
-                />
-                <p>{data.text}</p>
-              </div>
-              <TodayFeelingListTime>
-                {dayjs(data.time).format("HH시 mm분")}
-              </TodayFeelingListTime>
-            </TodayFeelingList>
-          ))}
-        </div>
-      </AddBarDiv>
       <FeelingList todayFeelingData={todayFeelingData} />
     </Main>
   );
@@ -182,84 +136,24 @@ const Main = styled(motion.div)`
     text-align: left;
     font-weight: 500;
   }
-
-  input::placeholder {
-    font-weight: 200;
-  }
-
-  input {
-    font-family: "Pretendard-Regular";
-    width: 100%;
-    padding: 12px 12px;
-    font-size: 25px;
-    font-weight: 200;
-    background: none;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    text-align: center;
-    color: #333d4b;
-    background-color: #f2f4f6;
-  }
 `;
 
-const AddBarDiv = styled.div`
+const LoadingDrug = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 70%;
   max-width: 900px;
   min-height: 101px;
-  background-color: ${(props) => props.bgColor};
+  background-color: white;
   border-radius: 20px;
   margin-bottom: 20px;
   padding: 20px;
+  padding-bottom: 29px;
 
   @media screen and (max-width: 768px) {
     width: 82%;
   }
-`;
-
-const AddBarHeader = styled.div`
-  font-family: "SUIT Variable", sans-serif;
-  font-weight: 900;
-  width: 100%;
-  color: #333d4b;
-  font-size: 27px;
-  margin-left: 0px;
-  margin-bottom: 2px;
-  text-align: left;
-`;
-
-const TodayFeelingList = styled(motion.div)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  background-color: white;
-  border-radius: 10px;
-  padding: 13px 0px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  /* border-bottom: 0.6px solid rgb(214, 214, 214, 0.6); */
-  p {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0;
-    font-weight: 900;
-    font-size: 17px;
-  }
-`;
-
-const TodayFeelingListTime = styled.div`
-  text-align: center;
-  min-width: 65px;
-  background-color: #f2f4f6;
-  border-radius: 10px;
-  padding: 6px 6px;
-  margin-left: 2px;
-  font-weight: 800;
-  font-size: 13px;
 `;
 
 export default Home;

@@ -1,5 +1,5 @@
 import React from "react";
-import { authService } from "./fbase";
+import { authService } from "../fbase";
 import styled from "styled-components";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,7 +15,7 @@ const Header = () => {
     <HeaderDiv>
       <a href="/">
         <img
-          src={require("./icons/logo31.png")}
+          src={require("../icons/logo31.png")}
           width={"100px"}
           height={"31px"}
         />

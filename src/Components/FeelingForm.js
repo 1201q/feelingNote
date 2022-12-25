@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import useInterval from "./hooks/useInterval";
-import { dbService } from "./fbase";
+import React, { useState } from "react";
+import useInterval from "../hooks/useInterval";
+import { dbService } from "../fbase";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import ProgressBar from "@ramonak/react-progress-bar";
@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-const Feeling = () => {
+const FeelingForm = () => {
   // 이모지 순서
   const emojiArray = [
     "crying",
@@ -59,7 +59,7 @@ const Feeling = () => {
   };
 
   return (
-    <FeelingDiv>
+    <FeelingFormDiv>
       <TimeDiv>
         <p>{dayjs(stopwatchTime).format("HH시 mm분 ss초")}</p>
       </TimeDiv>
@@ -104,16 +104,16 @@ const Feeling = () => {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               transition={{ duration: 0.2 }}
-              src={require(`./icons/${item}.png`)}
+              src={require(`../icons/${item}.png`)}
             />
           </EmojiBtn>
         ))}
       </EmojiDiv>
-    </FeelingDiv>
+    </FeelingFormDiv>
   );
 };
 
-const FeelingDiv = styled.div`
+const FeelingFormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -143,7 +143,24 @@ const FormDiv = styled.form`
   width: 100%;
   margin-bottom: 15px;
 
-  /* Home 컴포넌트 Main에 input속성, p 속성 있음 */
+  input {
+    font-family: "Pretendard-Regular";
+    width: 100%;
+    padding: 12px 12px;
+    font-size: 25px;
+    font-weight: 200;
+    background: none;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    text-align: center;
+    color: #333d4b;
+    background-color: #f2f4f6;
+  }
+
+  input::placeholder {
+    font-weight: 200;
+  }
 `;
 
 const ProgressBarDiv = styled.div`
@@ -180,4 +197,4 @@ const EmojiBtn = styled(motion.button)`
 const EmojiImg = styled(motion.img)`
   width: 30px;
 `;
-export default Feeling;
+export default FeelingForm;

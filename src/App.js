@@ -1,5 +1,5 @@
 import React from "react";
-import Router from "./Router";
+import Router from "./pages/Router";
 import { useEffect, useState } from "react";
 import { authService } from "./fbase";
 import { Orbit } from "@uiball/loaders";
