@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/feelingNote/static/css/main.70299b50.css",
-    "main.js": "/feelingNote/static/js/main.4310df97.js",
+    "main.css": "/feelingNote/static/css/main.510a43f8.css",
+    "main.js": "/feelingNote/static/js/main.7647f004.js",
     "static/media/crying.png": "/feelingNote/static/media/crying.c0dc0764adb658bf158f.png",
     "static/media/night-mode.png": "/feelingNote/static/media/night-mode.a296e8639091096979a5.png",
     "static/media/smile (1).png": "/feelingNote/static/media/smile (1).16907f147c5a3ae747d6.png",
@@ -11,17 +11,14 @@
     "static/media/angry.png": "/feelingNote/static/media/angry.30057d085d97bd45c22a.png",
     "static/media/crying (1).png": "/feelingNote/static/media/crying (1).1923e244650177ea3739.png",
     "static/media/neutral.png": "/feelingNote/static/media/neutral.fefa8fab38a0b02e6e73.png",
-    "static/media/logo1.png": "/feelingNote/static/media/logo1.6793de35f4426a096a10.png",
-    "static/media/logo2.png": "/feelingNote/static/media/logo2.95dc04b2794c674fddc7.png",
     "static/media/sun.png": "/feelingNote/static/media/sun.5915bafe96323dadfc76.png",
     "static/media/logo31.png": "/feelingNote/static/media/logo31.a0f3bb2a6e4db10a9849.png",
-    "static/media/logo3.png": "/feelingNote/static/media/logo3.78af34635504ebceec90.png",
     "index.html": "/feelingNote/index.html",
-    "main.70299b50.css.map": "/feelingNote/static/css/main.70299b50.css.map",
-    "main.4310df97.js.map": "/feelingNote/static/js/main.4310df97.js.map"
+    "main.510a43f8.css.map": "/feelingNote/static/css/main.510a43f8.css.map",
+    "main.7647f004.js.map": "/feelingNote/static/js/main.7647f004.js.map"
   },
   "entrypoints": [
-    "static/css/main.70299b50.css",
-    "static/js/main.4310df97.js"
+    "static/css/main.510a43f8.css",
+    "static/js/main.7647f004.js"
   ]
 }
