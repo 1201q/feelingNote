@@ -14,11 +14,7 @@ const Header = () => {
   return (
     <HeaderDiv>
       <a href="/">
-        <img
-          src={require("../icons/logo31.png")}
-          width={"100px"}
-          height={"31px"}
-        />
+        <HeaderImg src={require("../icons/헤더아이콘.png")} />
       </a>
       <LogOutBtn onClick={onLogOutBtnClick}>
         <FontAwesomeIcon icon={faCircleUser} />
@@ -40,7 +36,16 @@ const HeaderDiv = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 90%;
-    padding-left: 5px;
+    padding-left: 2px;
+  }
+`;
+
+const HeaderImg = styled.img`
+  width: 125px;
+
+  @media screen and (max-width: 768px) {
+    width: 110px;
+    margin-top: 3px;
   }
 `;
 
@@ -50,7 +55,7 @@ const LogOutBtn = styled.button`
   justify-content: center;
   border: none;
   background: none;
-  color: gray;
+  color: #b0b8c1;
   font-size: 30px;
   width: 45px;
   height: 45px;

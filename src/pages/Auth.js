@@ -14,7 +14,7 @@ const Auth = () => {
   };
   return (
     <AuthDiv>
-      <AuthImg src={require("../icons/logo31.png")} />
+      <AuthImg src={require("../icons/로그인헤더아이콘.png")} />
       <AuthBtn onClick={loginGoogle}>Google 로그인</AuthBtn>
       <AuthBtn onClick={loginGithub}>Github 로그인</AuthBtn>
     </AuthDiv>
@@ -32,7 +32,7 @@ const AuthDiv = styled.div`
 
 const AuthImg = styled.img`
   margin-bottom: 50px;
-  width: 200px;
+  width: 300px;
 `;
 
 const AuthBtn = styled.button`
@@ -44,7 +44,7 @@ const AuthBtn = styled.button`
   border-radius: 10px;
   font-size: 20px;
   font-weight: 900;
-  background-color: #17191d;
+  background-color: #3b3d3f;
   color: white;
   margin-bottom: 10px;
   padding: 10px;

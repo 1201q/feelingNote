@@ -69,7 +69,7 @@ function Home() {
     let returnTodayData = array.filter(
       (item) => item.dateID === dayjs().format("YYYY-M-D")
     )[0];
-    if (returnTodayData.length === 0) {
+    if (!returnTodayData) {
       // 오늘 약이 기록되지 않아 기본 데이터 생성
       drugInit();
     } else {

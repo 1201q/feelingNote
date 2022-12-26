@@ -117,9 +117,9 @@ const FeelingFormDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 900px;
+  width: 70%;
   min-height: 101px;
+  max-width: 900px;
   background-color: white;
   border-radius: 20px;
   margin-bottom: 20px;
