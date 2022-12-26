@@ -23,10 +23,12 @@ function Home() {
   // 드러그 데이터의 on off
   const [dayOnOff, setDayOnOff] = useState(false);
   const [nightOnOff, setNightOnOff] = useState(false);
+  const [sleepOnOff, setSleepOnOff] = useState(false);
 
   // 드러그 데이터의 기록 시간과 로딩
   const [dayTime, setDaytime] = useState("");
   const [nightTime, setNighttime] = useState("");
+  const [sleepTime, setSleeptime] = useState("");
   const [drugloading, setDrugLoading] = useState(false);
 
   useEffect(() => {
@@ -77,8 +79,10 @@ function Home() {
       setTodayDrugData(returnTodayData);
       setDayOnOff(returnTodayData.day);
       setNightOnOff(returnTodayData.night);
+      setSleepOnOff(returnTodayData.sleep);
       setDaytime(returnTodayData.whenEatDrugAtDay);
       setNighttime(returnTodayData.whenEatDrugAtNight);
+      setSleeptime(returnTodayData.whenEatDrugAtSleep);
       setDrugLoading(true); // true 로딩끝
     }
   };
@@ -91,8 +95,10 @@ function Home() {
       dateID: dayjs().format("YYYY-M-D"),
       day: false,
       night: false,
+      sleep: false,
       whenEatDrugAtDay: "",
       whenEatDrugAtNight: "",
+      whenEatDrugAtSleep: "",
     };
 
     await dbService.collection(`드러그`).add(drugData);
@@ -107,8 +113,10 @@ function Home() {
           DrugData={todayDrugData}
           DayOnOff={dayOnOff}
           NightOnOff={nightOnOff}
+          SleepOnOff={sleepOnOff}
           DayTime={dayTime}
           NightTime={nightTime}
+          SleepTime={sleepTime}
           Drugloading={drugloading}
         />
       ) : (
