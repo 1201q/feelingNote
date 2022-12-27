@@ -18,16 +18,6 @@ function Home() {
   const [todayDrugData, setTodayDrugData] = useState([]);
   const [todayFeelingData, setTodayFeelingData] = useState([]);
   const [feelingloading, setFeelingLoading] = useState(false);
-
-  // 드러그 데이터의 on off
-  const [dayOnOff, setDayOnOff] = useState(false);
-  const [nightOnOff, setNightOnOff] = useState(false);
-  const [sleepOnOff, setSleepOnOff] = useState(false);
-
-  // 드러그 데이터의 기록 시간과 로딩
-  const [dayTime, setDaytime] = useState("");
-  const [nightTime, setNighttime] = useState("");
-  const [sleepTime, setSleeptime] = useState("");
   const [drugloading, setDrugLoading] = useState(false);
 
   useEffect(() => {
@@ -65,14 +55,6 @@ function Home() {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(todayDrugData); // 77 드러그데이터
-  }, [drugloading]);
-
-  useEffect(() => {
-    console.log(todayFeelingData); // 81 필링데이터
-  }, [feelingloading]);
-
   const returnTodayrDrugData = (array) => {
     // 오늘자의 드러그 데이터만 필터링 반환
     let returnTodayData = array.filter(
@@ -84,15 +66,9 @@ function Home() {
       drugInit();
     } else {
       // 오늘 기록된 약이 있으므로 기존 데이터 불러오기
-      console.log("실행");
-      console.log(array);
+      // console.log("실행");
+      // console.log(array);
       setTodayDrugData(returnTodayData);
-      setDayOnOff(returnTodayData.day);
-      setNightOnOff(returnTodayData.night);
-      setSleepOnOff(returnTodayData.sleep);
-      setDaytime(returnTodayData.whenEatDrugAtDay);
-      setNighttime(returnTodayData.whenEatDrugAtNight);
-      setSleeptime(returnTodayData.whenEatDrugAtSleep);
       setDrugLoading(true); // true 로딩끝
     }
   };
@@ -116,16 +92,7 @@ function Home() {
   return (
     <Main>
       <FeelingForm />
-      <Drug
-        todayDrugData={todayDrugData}
-        DayOnOff={dayOnOff}
-        NightOnOff={nightOnOff}
-        SleepOnOff={sleepOnOff}
-        DayTime={dayTime}
-        NightTime={nightTime}
-        SleepTime={sleepTime}
-        Drugloading={drugloading}
-      />
+      <Drug todayDrugData={todayDrugData} Drugloading={drugloading} />
       <FeelingList todayFeelingData={todayFeelingData} />
     </Main>
   );

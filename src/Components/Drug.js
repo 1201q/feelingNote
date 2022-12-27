@@ -7,114 +7,68 @@ import { motion } from "framer-motion";
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-const Drug = ({
-  todayDrugData,
-  DayOnOff,
-  NightOnOff,
-  SleepOnOff,
-  DayTime,
-  NightTime,
-  SleepTime,
-  Drugloading,
-}) => {
-  // 약 기록 시작 => 데이, 나이트 버튼 출력
+const Drug = ({ todayDrugData }) => {
+  const [dayOnOff, setDayOnOff] = useState(todayDrugData.day);
+  const [nightOnOff, setNightOnOff] = useState(todayDrugData.night);
+  const [sleepOnOff, setSleepOnOff] = useState(todayDrugData.sleep);
+  const [dayTime, setDayTime] = useState(todayDrugData.whenEatDrugAtDay);
+  const [nightTime, setNightTime] = useState(todayDrugData.whenEatDrugAtNight);
+  const [sleepTime, setSleepTime] = useState(todayDrugData.whenEatDrugAtSleep);
 
+  useEffect(() => {
+    setDayOnOff(todayDrugData.day);
+    setDayTime(todayDrugData.whenEatDrugAtDay);
+    setNightOnOff(todayDrugData.night);
+    setNightTime(todayDrugData.whenEatDrugAtNight);
+    setSleepOnOff(todayDrugData.sleep);
+    setSleepTime(todayDrugData.whenEatDrugAtSleep);
+    console.log("실행");
+  }, [
+    todayDrugData.day,
+    todayDrugData.night,
+    todayDrugData.sleep,
+    todayDrugData.whenEatDrugAtDay,
+    todayDrugData.whenEatDrugAtNight,
+    todayDrugData.whenEatDrugAtSleep,
+  ]);
   // 현재시간을 기록하는데 필요
   const [stopwatchTime, setStopwatchTime] = useState(dayjs().format());
-
-  // button on off{}
-  const [dayBtn, setDayBtn] = useState(DayOnOff);
-  const [nightBtn, setNightBtn] = useState(NightOnOff);
-  const [sleepBtn, setSleepBtn] = useState(SleepOnOff);
-
-  // 로딩
-  const [drugloading, setDrugLoading] = useState(Drugloading);
-
-  //
-  useEffect(() => {
-    console.log(todayDrugData);
-  }, [Drugloading]);
-  //
-
-  const dayAndNightBtnClick = (e) => {
-    let dayOnOff = false;
-    let nightOnOff = false;
-    let sleepOnOff = false;
-    if (e.target.name === "day") {
-      if (dayBtn === true) {
-        dayOnOff = !window.confirm("약 기록을 지울게요.");
-      }
-      if (dayOnOff === false) {
-        dayAndNightChange(e);
-      }
-    } else if (e.target.name === "night") {
-      if (nightBtn === true) {
-        nightOnOff = !window.confirm("약 기록을 지울게요.");
-      }
-      if (nightOnOff === false) {
-        dayAndNightChange(e);
-      }
-    } else if (e.target.name === "sleep") {
-      if (sleepBtn === true) {
-        sleepOnOff = !window.confirm("약 기록을 지울게요.");
-      }
-      if (sleepOnOff === false) {
-        dayAndNightChange(e);
-      }
-    }
-  };
 
   const dayAndNightChange = async (e) => {
     setStopwatchTime(dayjs().format());
     if (e.target.name === "day") {
-      setDayBtn(!dayBtn);
-
-      if (dayBtn === false) {
-        await dbService.doc(`드러그/${todayDrugData.id}`).update({
-          day: true,
-          whenEatDrugAtDay: dayjs(stopwatchTime).format(),
-        });
-
-        // 기록
-      } else {
-        await dbService.doc(`드러그/${todayDrugData.id}`).update({
-          day: false,
-          whenEatDrugAtDay: "",
-        });
-        // 삭제
+      const DayData = {
+        day: !dayOnOff,
+        whenEatDrugAtDay: !dayOnOff ? dayjs(stopwatchTime).format() : "",
+      };
+      if (dayOnOff) {
+        let dayConfirm = window.confirm("약 기록을 지울게요.");
+        if (!dayConfirm) return;
       }
+      await dbService.doc(`드러그/${todayDrugData.id}`).update(DayData);
     } else if (e.target.name === "night") {
-      setNightBtn(!nightBtn);
-      if (nightBtn === false) {
-        await dbService.doc(`드러그/${todayDrugData.id}`).update({
-          night: true,
-          whenEatDrugAtNight: dayjs(stopwatchTime).format(),
-        });
-        // 기록
-      } else {
-        await dbService.doc(`드러그/${todayDrugData.id}`).update({
-          night: false,
-          whenEatDrugAtNight: "",
-        });
-        // 삭제
+      const NightData = {
+        night: !nightOnOff,
+        whenEatDrugAtNight: !nightOnOff ? dayjs(stopwatchTime).format() : "",
+      };
+      if (nightOnOff) {
+        let nightConfirm = window.confirm("약 기록을 지울게요.");
+        if (!nightConfirm) return;
       }
+      await dbService.doc(`드러그/${todayDrugData.id}`).update(NightData);
     } else if (e.target.name === "sleep") {
-      setSleepBtn(!sleepBtn);
-      if (sleepBtn === false) {
-        await dbService.doc(`드러그/${todayDrugData.id}`).update({
-          sleep: true,
-          whenEatDrugAtSleep: dayjs(stopwatchTime).format(),
-        });
-        // 기록
-      } else {
-        await dbService.doc(`드러그/${todayDrugData.id}`).update({
-          sleep: false,
-          whenEatDrugAtSleep: "",
-        });
-        // 삭제
+      const SleepData = {
+        sleep: !sleepOnOff,
+        whenEatDrugAtSleep: !sleepOnOff ? dayjs(stopwatchTime).format() : "",
+      };
+      if (sleepOnOff) {
+        let sleepConfirm = window.confirm("약 기록을 지울게요.");
+        if (!sleepConfirm) return;
       }
+      await dbService.doc(`드러그/${todayDrugData.id}`).update(SleepData);
     }
   };
+
   return (
     <>
       <DrugDiv>
@@ -124,72 +78,65 @@ const Drug = ({
             whileHover={{ scale: 1.0 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            onClick={dayAndNightBtnClick}
+            onClick={dayAndNightChange}
             bgcolor="#3B82F6"
-            btnwidth={DayOnOff ? "18%" : "37%"}
             name="day"
-            opacity={DayOnOff ? "1" : "0.5"}
-            fontSize={DayOnOff ? "20px" : "16px"}
+            opacity={dayOnOff ? "1" : "0.5"}
+            fontSize={dayOnOff ? "20px" : "16px"}
           >
             <Icon
               src={require("../icons/sun.png")}
               imgwidth="33px"
               imgheight="33px"
-              imgmargin={DayOnOff ? "0px 3px 0px 0px" : "0px"}
+              imgmargin={dayOnOff ? "0px 3px 0px 0px" : "0px"}
               name="day"
             />
-            {DayOnOff
-              ? `${dayjs(DayTime).format("HH:")}${dayjs(DayTime).format("mm")}`
-              : ``}
+            {dayOnOff &&
+              `${dayjs(dayTime).format("HH:")}${dayjs(dayTime).format("mm")}`}
           </DayAndNightButton>
           <DayAndNightButton
             whileHover={{ scale: 1.0 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            onClick={dayAndNightBtnClick}
+            onClick={dayAndNightChange}
             bgcolor={"#6366F1"}
-            btnwidth={NightOnOff && !DayOnOff ? "18%" : "37%"}
             name="night"
-            opacity={NightOnOff ? "1" : "0.5"}
-            fontSize={NightOnOff ? "20px" : "19px"}
+            opacity={nightOnOff ? "1" : "0.5"}
+            fontSize={nightOnOff ? "20px" : "19px"}
           >
             <Icon
               src={require("../icons/night-mode.png")}
               imgwidth="25px"
               imgheight="25px"
-              imgmargin={NightOnOff ? "0px 6px 0px 0px" : "0px"}
+              imgmargin={nightOnOff ? "0px 6px 0px 0px" : "0px"}
               name="night"
             />
-
-            {NightOnOff
-              ? `${dayjs(NightTime).format("HH:")}${dayjs(NightTime).format(
-                  "mm"
-                )}`
-              : ``}
+            {nightOnOff &&
+              `${dayjs(nightTime).format("HH:")}${dayjs(nightTime).format(
+                "mm"
+              )}`}
           </DayAndNightButton>
           <DayAndNightButton
             whileHover={{ scale: 1.0 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            onClick={dayAndNightBtnClick}
+            onClick={dayAndNightChange}
             bgcolor={"#30516E"}
-            btnwidth={DayOnOff || (!DayOnOff && NightOnOff) ? "37%" : "18%"}
             name="sleep"
-            opacity={SleepOnOff ? "1" : "0.5"}
-            fontSize={SleepOnOff ? "20px" : "16px"}
+            opacity={sleepOnOff ? "1" : "0.5"}
+            fontSize={sleepOnOff ? "20px" : "16px"}
           >
             <Icon
               src={require("../icons/half-moon.png")}
               name="sleep"
               imgwidth="25px"
               imgheight="25px"
-              imgmargin={SleepOnOff ? "0px 6px 0px 0px" : "0px"}
+              imgmargin={sleepOnOff ? "0px 6px 0px 0px" : "0px"}
             />
-            {SleepOnOff
-              ? `${dayjs(SleepTime).format("HH:")}${dayjs(SleepTime).format(
-                  "mm"
-                )}`
-              : ``}
+            {sleepOnOff &&
+              `${dayjs(sleepTime).format("HH:")}${dayjs(sleepTime).format(
+                "mm"
+              )}`}
           </DayAndNightButton>
         </ButtonDiv>
       </DrugDiv>
@@ -234,7 +181,6 @@ const ButtonDiv = styled.div`
 const DayAndNightButton = styled(motion.button)`
   font-family: "Pretendard-Regular";
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.3s ease, width 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -252,6 +198,7 @@ const DayAndNightButton = styled(motion.button)`
   font-weight: 900;
   font-size: 20px;
   text-align: left;
+  transition: opacity 0.3s ease, width 0.3s ease;
 
   @media screen and (max-width: 768px) {
     width: 31%;
