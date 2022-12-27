@@ -26,7 +26,7 @@ const Header = () => {
 const HeaderDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: left;
+  align-items: flex-start;
   width: 75%;
   max-width: 960px;
   height: 42px;

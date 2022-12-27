@@ -3,7 +3,6 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import { dbService } from "../fbase";
 import { motion } from "framer-motion";
-import Header from "../Components/Header";
 import FeelingForm from "../Components/FeelingForm";
 import FeelingList from "../Components/FeelingList";
 import Drug from "../Components/Drug";
@@ -66,16 +65,27 @@ function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    console.log(todayDrugData); // 77 드러그데이터
+  }, [drugloading]);
+
+  useEffect(() => {
+    console.log(todayFeelingData); // 81 필링데이터
+  }, [feelingloading]);
+
   const returnTodayrDrugData = (array) => {
     // 오늘자의 드러그 데이터만 필터링 반환
     let returnTodayData = array.filter(
       (item) => item.dateID === dayjs().format("YYYY-M-D")
     )[0];
     if (!returnTodayData) {
+      console.log("init");
       // 오늘 약이 기록되지 않아 기본 데이터 생성
       drugInit();
     } else {
       // 오늘 기록된 약이 있으므로 기존 데이터 불러오기
+      console.log("실행");
+      console.log(array);
       setTodayDrugData(returnTodayData);
       setDayOnOff(returnTodayData.day);
       setNightOnOff(returnTodayData.night);
@@ -103,25 +113,19 @@ function Home() {
 
     await dbService.collection(`드러그`).add(drugData);
   };
-
   return (
     <Main>
-      <Header />
       <FeelingForm />
-      {drugloading ? (
-        <Drug
-          DrugData={todayDrugData}
-          DayOnOff={dayOnOff}
-          NightOnOff={nightOnOff}
-          SleepOnOff={sleepOnOff}
-          DayTime={dayTime}
-          NightTime={nightTime}
-          SleepTime={sleepTime}
-          Drugloading={drugloading}
-        />
-      ) : (
-        <LoadingDrug></LoadingDrug>
-      )}
+      <Drug
+        todayDrugData={todayDrugData}
+        DayOnOff={dayOnOff}
+        NightOnOff={nightOnOff}
+        SleepOnOff={sleepOnOff}
+        DayTime={dayTime}
+        NightTime={nightTime}
+        SleepTime={sleepTime}
+        Drugloading={drugloading}
+      />
       <FeelingList todayFeelingData={todayFeelingData} />
     </Main>
   );

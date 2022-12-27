@@ -8,7 +8,7 @@ const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
 const Drug = ({
-  DrugData,
+  todayDrugData,
   DayOnOff,
   NightOnOff,
   SleepOnOff,
@@ -29,6 +29,12 @@ const Drug = ({
 
   // 로딩
   const [drugloading, setDrugLoading] = useState(Drugloading);
+
+  //
+  useEffect(() => {
+    console.log(todayDrugData);
+  }, [Drugloading]);
+  //
 
   const dayAndNightBtnClick = (e) => {
     let dayOnOff = false;
@@ -62,15 +68,16 @@ const Drug = ({
     setStopwatchTime(dayjs().format());
     if (e.target.name === "day") {
       setDayBtn(!dayBtn);
+
       if (dayBtn === false) {
-        await dbService.doc(`드러그/${DrugData.id}`).update({
+        await dbService.doc(`드러그/${todayDrugData.id}`).update({
           day: true,
           whenEatDrugAtDay: dayjs(stopwatchTime).format(),
         });
 
         // 기록
       } else {
-        await dbService.doc(`드러그/${DrugData.id}`).update({
+        await dbService.doc(`드러그/${todayDrugData.id}`).update({
           day: false,
           whenEatDrugAtDay: "",
         });
@@ -79,13 +86,13 @@ const Drug = ({
     } else if (e.target.name === "night") {
       setNightBtn(!nightBtn);
       if (nightBtn === false) {
-        await dbService.doc(`드러그/${DrugData.id}`).update({
+        await dbService.doc(`드러그/${todayDrugData.id}`).update({
           night: true,
           whenEatDrugAtNight: dayjs(stopwatchTime).format(),
         });
         // 기록
       } else {
-        await dbService.doc(`드러그/${DrugData.id}`).update({
+        await dbService.doc(`드러그/${todayDrugData.id}`).update({
           night: false,
           whenEatDrugAtNight: "",
         });
@@ -94,13 +101,13 @@ const Drug = ({
     } else if (e.target.name === "sleep") {
       setSleepBtn(!sleepBtn);
       if (sleepBtn === false) {
-        await dbService.doc(`드러그/${DrugData.id}`).update({
+        await dbService.doc(`드러그/${todayDrugData.id}`).update({
           sleep: true,
           whenEatDrugAtSleep: dayjs(stopwatchTime).format(),
         });
         // 기록
       } else {
-        await dbService.doc(`드러그/${DrugData.id}`).update({
+        await dbService.doc(`드러그/${todayDrugData.id}`).update({
           sleep: false,
           whenEatDrugAtSleep: "",
         });
@@ -110,91 +117,82 @@ const Drug = ({
   };
   return (
     <>
-      {drugloading ? (
-        <DrugDiv>
-          <Header>약</Header>
-          <ButtonDiv>
-            <DayAndNightButton
-              whileHover={{ scale: 1.0 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              onClick={dayAndNightBtnClick}
-              bgcolor="#3B82F6"
-              btnwidth={DayOnOff ? "18%" : "37%"}
+      <DrugDiv>
+        <Header>약</Header>
+        <ButtonDiv>
+          <DayAndNightButton
+            whileHover={{ scale: 1.0 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            onClick={dayAndNightBtnClick}
+            bgcolor="#3B82F6"
+            btnwidth={DayOnOff ? "18%" : "37%"}
+            name="day"
+            opacity={DayOnOff ? "1" : "0.5"}
+            fontSize={DayOnOff ? "20px" : "16px"}
+          >
+            <Icon
+              src={require("../icons/sun.png")}
+              imgwidth="33px"
+              imgheight="33px"
+              imgmargin={DayOnOff ? "0px 3px 0px 0px" : "0px"}
               name="day"
-              opacity={DayOnOff ? "1" : "0.5"}
-              fontSize={DayOnOff ? "20px" : "16px"}
-            >
-              <Icon
-                src={require("../icons/sun.png")}
-                imgwidth="33px"
-                imgheight="33px"
-                imgmargin={DayOnOff ? "0px 3px 0px 0px" : "0px"}
-                name="day"
-              />
-              {DayOnOff
-                ? `${dayjs(DayTime).format("HH:")}${dayjs(DayTime).format(
-                    "mm"
-                  )}`
-                : ``}
-            </DayAndNightButton>
-            <DayAndNightButton
-              whileHover={{ scale: 1.0 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              onClick={dayAndNightBtnClick}
-              bgcolor={"#6366F1"}
-              btnwidth={NightOnOff && !DayOnOff ? "18%" : "37%"}
+            />
+            {DayOnOff
+              ? `${dayjs(DayTime).format("HH:")}${dayjs(DayTime).format("mm")}`
+              : ``}
+          </DayAndNightButton>
+          <DayAndNightButton
+            whileHover={{ scale: 1.0 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            onClick={dayAndNightBtnClick}
+            bgcolor={"#6366F1"}
+            btnwidth={NightOnOff && !DayOnOff ? "18%" : "37%"}
+            name="night"
+            opacity={NightOnOff ? "1" : "0.5"}
+            fontSize={NightOnOff ? "20px" : "19px"}
+          >
+            <Icon
+              src={require("../icons/night-mode.png")}
+              imgwidth="25px"
+              imgheight="25px"
+              imgmargin={NightOnOff ? "0px 6px 0px 0px" : "0px"}
               name="night"
-              opacity={NightOnOff ? "1" : "0.5"}
-              fontSize={NightOnOff ? "20px" : "19px"}
-            >
-              <Icon
-                src={require("../icons/night-mode.png")}
-                imgwidth="25px"
-                imgheight="25px"
-                imgmargin={NightOnOff ? "0px 6px 0px 0px" : "0px"}
-                name="night"
-              />
+            />
 
-              {NightOnOff
-                ? `${dayjs(NightTime).format("HH:")}${dayjs(NightTime).format(
-                    "mm"
-                  )}`
-                : ``}
-            </DayAndNightButton>
-            <DayAndNightButton
-              whileHover={{ scale: 1.0 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              onClick={dayAndNightBtnClick}
-              bgcolor={"#30516E"}
-              btnwidth={DayOnOff || (!DayOnOff && NightOnOff) ? "37%" : "18%"}
+            {NightOnOff
+              ? `${dayjs(NightTime).format("HH:")}${dayjs(NightTime).format(
+                  "mm"
+                )}`
+              : ``}
+          </DayAndNightButton>
+          <DayAndNightButton
+            whileHover={{ scale: 1.0 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            onClick={dayAndNightBtnClick}
+            bgcolor={"#30516E"}
+            btnwidth={DayOnOff || (!DayOnOff && NightOnOff) ? "37%" : "18%"}
+            name="sleep"
+            opacity={SleepOnOff ? "1" : "0.5"}
+            fontSize={SleepOnOff ? "20px" : "16px"}
+          >
+            <Icon
+              src={require("../icons/half-moon.png")}
               name="sleep"
-              opacity={SleepOnOff ? "1" : "0.5"}
-              fontSize={SleepOnOff ? "20px" : "16px"}
-            >
-              <Icon
-                src={require("../icons/half-moon.png")}
-                name="sleep"
-                imgwidth="25px"
-                imgheight="25px"
-                imgmargin={SleepOnOff ? "0px 6px 0px 0px" : "0px"}
-              />
-              {SleepOnOff
-                ? `${dayjs(SleepTime).format("HH:")}${dayjs(SleepTime).format(
-                    "mm"
-                  )}`
-                : ``}
-            </DayAndNightButton>
-          </ButtonDiv>
-        </DrugDiv>
-      ) : (
-        <LoadingDrugDiv
-          bgColor="white"
-          style={{ marginBottom: "20px", paddingBottom: "29px" }}
-        ></LoadingDrugDiv>
-      )}
+              imgwidth="25px"
+              imgheight="25px"
+              imgmargin={SleepOnOff ? "0px 6px 0px 0px" : "0px"}
+            />
+            {SleepOnOff
+              ? `${dayjs(SleepTime).format("HH:")}${dayjs(SleepTime).format(
+                  "mm"
+                )}`
+              : ``}
+          </DayAndNightButton>
+        </ButtonDiv>
+      </DrugDiv>
     </>
   );
 };
