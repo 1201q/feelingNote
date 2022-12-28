@@ -12,24 +12,24 @@ const Drug = ({ todayDrugData, setDrugClick, drugClick }) => {
   const [dayOnOff, setDayOnOff] = useState(todayDrugData.day);
   const [nightOnOff, setNightOnOff] = useState(todayDrugData.night);
   const [sleepOnOff, setSleepOnOff] = useState(todayDrugData.sleep);
-  const [dayTime, setDayTime] = useState(todayDrugData.whenEatDrugAtDay);
-  const [nightTime, setNightTime] = useState(todayDrugData.whenEatDrugAtNight);
-  const [sleepTime, setSleepTime] = useState(todayDrugData.whenEatDrugAtSleep);
+  const [dayTime, setDayTime] = useState(todayDrugData.whenEatDrugAtday);
+  const [nightTime, setNightTime] = useState(todayDrugData.whenEatDrugAtnight);
+  const [sleepTime, setSleepTime] = useState(todayDrugData.whenEatDrugAtsleep);
 
   useEffect(() => {
     setDayOnOff(todayDrugData.day);
-    setDayTime(todayDrugData.whenEatDrugAtDay);
+    setDayTime(todayDrugData.whenEatDrugAtday);
     setNightOnOff(todayDrugData.night);
-    setNightTime(todayDrugData.whenEatDrugAtNight);
+    setNightTime(todayDrugData.whenEatDrugAtnight);
     setSleepOnOff(todayDrugData.sleep);
-    setSleepTime(todayDrugData.whenEatDrugAtSleep);
+    setSleepTime(todayDrugData.whenEatDrugAtsleep);
   }, [
     todayDrugData.day,
     todayDrugData.night,
     todayDrugData.sleep,
-    todayDrugData.whenEatDrugAtDay,
-    todayDrugData.whenEatDrugAtNight,
-    todayDrugData.whenEatDrugAtSleep,
+    todayDrugData.whenEatDrugAtday,
+    todayDrugData.whenEatDrugAtnight,
+    todayDrugData.whenEatDrugAtsleep,
   ]);
   // 현재시간을 기록하는데 필요
   const [stopwatchTime, setStopwatchTime] = useState(dayjs().format());

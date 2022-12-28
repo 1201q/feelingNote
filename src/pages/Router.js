@@ -54,7 +54,6 @@ export default function Root({ isLoggedIn }) {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log(array);
         // 드러그 데이터의 중복 생성 방지
         returnTodayrDrugData(array);
       });
