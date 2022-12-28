@@ -3,11 +3,12 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import { dbService } from "../fbase";
 import { motion } from "framer-motion";
+import { Link, useHistory } from "react-router-dom";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-const Drug = ({ todayDrugData }) => {
+const Drug = ({ todayDrugData, setDrugClick, drugClick }) => {
   const [dayOnOff, setDayOnOff] = useState(todayDrugData.day);
   const [nightOnOff, setNightOnOff] = useState(todayDrugData.night);
   const [sleepOnOff, setSleepOnOff] = useState(todayDrugData.sleep);
@@ -22,7 +23,6 @@ const Drug = ({ todayDrugData }) => {
     setNightTime(todayDrugData.whenEatDrugAtNight);
     setSleepOnOff(todayDrugData.sleep);
     setSleepTime(todayDrugData.whenEatDrugAtSleep);
-    console.log("실행");
   }, [
     todayDrugData.day,
     todayDrugData.night,
@@ -35,116 +35,138 @@ const Drug = ({ todayDrugData }) => {
   const [stopwatchTime, setStopwatchTime] = useState(dayjs().format());
 
   const dayAndNightChange = async (e) => {
+    const { name } = e.target;
     setStopwatchTime(dayjs().format());
-    if (e.target.name === "day") {
-      const DayData = {
+
+    if (name === "day") {
+      const data = {
         day: !dayOnOff,
-        whenEatDrugAtDay: !dayOnOff ? dayjs(stopwatchTime).format() : "",
+        whenEatDrugAtday: !dayOnOff ? dayjs(stopwatchTime).format() : "",
       };
       if (dayOnOff) {
         let dayConfirm = window.confirm("약 기록을 지울게요.");
         if (!dayConfirm) return;
       }
-      await dbService.doc(`드러그/${todayDrugData.id}`).update(DayData);
-    } else if (e.target.name === "night") {
-      const NightData = {
+      await dbService.doc(`드러그/${todayDrugData.id}`).update(data);
+    } else if (name === "night") {
+      const data = {
         night: !nightOnOff,
-        whenEatDrugAtNight: !nightOnOff ? dayjs(stopwatchTime).format() : "",
+        whenEatDrugAtnight: !nightOnOff ? dayjs(stopwatchTime).format() : "",
       };
       if (nightOnOff) {
         let nightConfirm = window.confirm("약 기록을 지울게요.");
         if (!nightConfirm) return;
       }
-      await dbService.doc(`드러그/${todayDrugData.id}`).update(NightData);
-    } else if (e.target.name === "sleep") {
-      const SleepData = {
+      await dbService.doc(`드러그/${todayDrugData.id}`).update(data);
+    } else if (name === "sleep") {
+      const data = {
         sleep: !sleepOnOff,
-        whenEatDrugAtSleep: !sleepOnOff ? dayjs(stopwatchTime).format() : "",
+        whenEatDrugAtsleep: !sleepOnOff ? dayjs(stopwatchTime).format() : "",
       };
       if (sleepOnOff) {
         let sleepConfirm = window.confirm("약 기록을 지울게요.");
         if (!sleepConfirm) return;
       }
-      await dbService.doc(`드러그/${todayDrugData.id}`).update(SleepData);
+      await dbService.doc(`드러그/${todayDrugData.id}`).update(data);
     }
   };
 
+  const history = useHistory();
+  const [click, setClick] = useState(false);
+
   return (
-    <>
-      <DrugDiv>
-        <Header>약</Header>
-        <ButtonDiv>
-          <DayAndNightButton
-            whileHover={{ scale: 1.0 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            onClick={dayAndNightChange}
-            bgcolor="#3B82F6"
+    <DrugDiv
+      layout
+      transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
+      initial={{ height: "100%", opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+    >
+      <Header
+        onClick={() => {
+          setDrugClick(!drugClick);
+        }}
+        whileHover={{ scale: 1.0, background: "white " }}
+        whileTap={{
+          scale: 0.98,
+          background: "rgba(176,184,193, 0.2)",
+        }}
+        transition={{ duration: 0.1 }}
+      >
+        약
+      </Header>
+      <ButtonDiv>
+        <DayAndNightButton
+          whileHover={{ scale: 1.0 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+          onClick={dayAndNightChange}
+          bgcolor="#3B82F6"
+          name="day"
+          opacity={dayOnOff ? "1" : "0.5"}
+          fontSize={dayOnOff ? "20px" : "16px"}
+        >
+          <Icon
+            src={require("../icons/sun.png")}
+            imgwidth="33px"
+            imgheight="33px"
+            imgmargin={dayOnOff ? "0px 3px 0px 0px" : "0px"}
             name="day"
-            opacity={dayOnOff ? "1" : "0.5"}
-            fontSize={dayOnOff ? "20px" : "16px"}
-          >
-            <Icon
-              src={require("../icons/sun.png")}
-              imgwidth="33px"
-              imgheight="33px"
-              imgmargin={dayOnOff ? "0px 3px 0px 0px" : "0px"}
-              name="day"
-            />
-            {dayOnOff &&
-              `${dayjs(dayTime).format("HH:")}${dayjs(dayTime).format("mm")}`}
-          </DayAndNightButton>
-          <DayAndNightButton
-            whileHover={{ scale: 1.0 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            onClick={dayAndNightChange}
-            bgcolor={"#6366F1"}
+          />
+          {dayOnOff &&
+            `${dayjs(dayTime).format("HH:")}${dayjs(dayTime).format("mm")}`}
+        </DayAndNightButton>
+        <DayAndNightButton
+          whileHover={{ scale: 1.0 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+          onClick={dayAndNightChange}
+          bgcolor={"#6366F1"}
+          name="night"
+          opacity={nightOnOff ? "1" : "0.5"}
+          fontSize={nightOnOff ? "20px" : "19px"}
+        >
+          <Icon
+            src={require("../icons/night-mode.png")}
+            imgwidth="25px"
+            imgheight="25px"
+            imgmargin={nightOnOff ? "0px 6px 0px 0px" : "0px"}
             name="night"
-            opacity={nightOnOff ? "1" : "0.5"}
-            fontSize={nightOnOff ? "20px" : "19px"}
-          >
-            <Icon
-              src={require("../icons/night-mode.png")}
-              imgwidth="25px"
-              imgheight="25px"
-              imgmargin={nightOnOff ? "0px 6px 0px 0px" : "0px"}
-              name="night"
-            />
-            {nightOnOff &&
-              `${dayjs(nightTime).format("HH:")}${dayjs(nightTime).format(
-                "mm"
-              )}`}
-          </DayAndNightButton>
-          <DayAndNightButton
-            whileHover={{ scale: 1.0 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            onClick={dayAndNightChange}
-            bgcolor={"#30516E"}
+          />
+          {nightOnOff &&
+            `${dayjs(nightTime).format("HH:")}${dayjs(nightTime).format("mm")}`}
+        </DayAndNightButton>
+        <DayAndNightButton
+          whileHover={{ scale: 1.0 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+          onClick={dayAndNightChange}
+          bgcolor={"#30516E"}
+          name="sleep"
+          opacity={sleepOnOff ? "1" : "0.5"}
+          fontSize={sleepOnOff ? "20px" : "16px"}
+        >
+          <Icon
+            src={require("../icons/half-moon.png")}
             name="sleep"
-            opacity={sleepOnOff ? "1" : "0.5"}
-            fontSize={sleepOnOff ? "20px" : "16px"}
-          >
-            <Icon
-              src={require("../icons/half-moon.png")}
-              name="sleep"
-              imgwidth="25px"
-              imgheight="25px"
-              imgmargin={sleepOnOff ? "0px 6px 0px 0px" : "0px"}
-            />
-            {sleepOnOff &&
-              `${dayjs(sleepTime).format("HH:")}${dayjs(sleepTime).format(
-                "mm"
-              )}`}
-          </DayAndNightButton>
-        </ButtonDiv>
-      </DrugDiv>
-    </>
+            imgwidth="25px"
+            imgheight="25px"
+            imgmargin={sleepOnOff ? "0px 6px 0px 0px" : "0px"}
+          />
+          {sleepOnOff &&
+            `${dayjs(sleepTime).format("HH:")}${dayjs(sleepTime).format("mm")}`}
+        </DayAndNightButton>
+      </ButtonDiv>
+    </DrugDiv>
   );
 };
 
-const Header = styled.div`
+const Header = styled(motion.div)`
+  /* &:hover {
+    background-color: rgba(176, 184, 193, 0.3);
+    border-radius: 10px;
+    transition: all 0.3s;
+  } */
+
   font-family: "SUIT Variable", sans-serif;
   font-weight: 900;
   font-size: 27px;
@@ -152,10 +174,13 @@ const Header = styled.div`
   width: 100%;
   color: #333d4b;
   margin-left: 0px;
+  padding-bottom: 4px;
   margin-bottom: 15px;
+  border-radius: 10px;
 `;
 
-const DrugDiv = styled.div`
+const DrugDiv = styled(motion.div)`
+  -webkit-tap-highlight-color: transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -166,6 +191,7 @@ const DrugDiv = styled.div`
   border-radius: 20px;
   margin-bottom: 20px;
   padding: 20px;
+  cursor: pointer;
 
   @media screen and (max-width: 768px) {
     width: 82%;

@@ -8,14 +8,7 @@ dayjs.extend(customParseFormat);
 
 const FLcomponent = ({ data, index }) => {
   return (
-    <FLcomponentDiv
-      initial={{ y: 40, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{
-        duration: 0.2,
-        delay: index * 0.1,
-      }}
-    >
+    <FLcomponentDiv>
       <Component>
         <ComponentImg src={require(`../icons/${data.feeling}.png`)} />
         {data.text}

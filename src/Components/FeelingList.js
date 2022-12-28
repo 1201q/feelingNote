@@ -1,10 +1,16 @@
 import styled from "styled-components";
 import React from "react";
 import FLcomponent from "./FLcomponent";
+import { motion } from "framer-motion";
 
 const FeelingList = ({ todayFeelingData }) => {
   return (
-    <FeelingListDiv>
+    <FeelingListDiv
+      layout
+      transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
+      initial={{ height: "100%", opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+    >
       <Header>시간순</Header>
       <ComponentDiv>
         {todayFeelingData.map((data, index) => (
@@ -15,7 +21,7 @@ const FeelingList = ({ todayFeelingData }) => {
   );
 };
 
-const FeelingListDiv = styled.div`
+const FeelingListDiv = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

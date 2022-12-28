@@ -13,7 +13,7 @@ const Header = () => {
   };
   return (
     <HeaderDiv>
-      <a href="/">
+      <a href="/feelingNote">
         <HeaderImg src={require("../icons/헤더.png")} />
       </a>
       <LogOutBtn onClick={onLogOutBtnClick}>

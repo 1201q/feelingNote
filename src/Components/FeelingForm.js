@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-const FeelingForm = () => {
+const FeelingForm = ({ drugClick }) => {
   // 이모지 순서
   const emojiArray = [
     "crying",
@@ -51,69 +51,79 @@ const FeelingForm = () => {
   const returnProgressPercent = () => {
     let hour = dayjs(stopwatchTime).get("hour");
     let min = dayjs(stopwatchTime).get("minutes");
-    let cal = hour * 60 + min;
+    let cal = hour * 60 + min; // 분자
     let progressPercent = ((cal / 1440) * 100).toFixed(2);
-    setDayProgress(((cal / 1440) * 100).toFixed(2));
+    setDayProgress(progressPercent);
 
     return progressPercent;
   };
 
   return (
-    <FeelingFormDiv>
-      <TimeDiv>
-        <p>{dayjs(stopwatchTime).format("HH시 mm분 ss초")}</p>
-      </TimeDiv>
-      <FormDiv onSubmit={onFeelingDataSubmit}>
-        <input
-          type="text"
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-          value={text}
-          placeholder="현재 기분은?"
-        />
-      </FormDiv>
-      <ProgressBarDiv>
-        <ProgressBar
-          completed={dayProgress}
-          width={"100%"}
-          height={"18px"}
-          borderRadius={"7px"}
-          bgColor={"#4448FF"}
-          baseBgColor={"#f2f4f6"}
-          customLabel={`${dayProgress}%`}
-          labelAlignment={"right"}
-          labelSize="13px"
-          transitionDuration={"0.7s"}
-          animateOnRender={true}
-          margin={"0px 0px 8px 0px"}
-        />
-      </ProgressBarDiv>
-      <EmojiDiv>
-        {emojiArray.map((item, index) => (
-          <EmojiBtn
-            bottombordercolor={
-              emojiArray[index] === currentEmoji ? "#e0e0de" : "white"
-            }
-            key={index}
-            onClick={() => {
-              setCurrentEmoji(emojiArray[index]);
-            }}
-          >
-            <EmojiImg
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ duration: 0.2 }}
-              src={require(`../icons/${item}.png`)}
+    <AnimatePresence>
+      {drugClick && (
+        <FeelingFormDiv
+          layout
+          transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
+          initial={{ height: "100%", opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ height: "0%", scale: 0, opacity: 0 }}
+        >
+          <TimeDiv>
+            <p>{dayjs(stopwatchTime).format("HH시 mm분 ss초")}</p>
+          </TimeDiv>
+          <FormDiv onSubmit={onFeelingDataSubmit}>
+            <input
+              type="text"
+              onChange={(e) => {
+                setText(e.target.value);
+              }}
+              value={text}
+              placeholder="현재 기분은?"
             />
-          </EmojiBtn>
-        ))}
-      </EmojiDiv>
-    </FeelingFormDiv>
+          </FormDiv>
+          <ProgressBarDiv>
+            <ProgressBar
+              completed={dayProgress}
+              width={"100%"}
+              height={"18px"}
+              borderRadius={"7px"}
+              bgColor={"#4448FF"}
+              baseBgColor={"#f2f4f6"}
+              customLabel={`${dayProgress}%`}
+              labelAlignment={"right"}
+              labelSize="13px"
+              transitionDuration={"0.7s"}
+              animateOnRender={true}
+              margin={"0px 0px 8px 0px"}
+            />
+          </ProgressBarDiv>
+          <EmojiDiv>
+            {emojiArray.map((item, index) => (
+              <EmojiBtn
+                bottombordercolor={
+                  emojiArray[index] === currentEmoji ? "#e0e0de" : "white"
+                }
+                key={index}
+                onClick={() => {
+                  setCurrentEmoji(emojiArray[index]);
+                }}
+              >
+                <EmojiImg
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                  src={require(`../icons/${item}.png`)}
+                />
+              </EmojiBtn>
+            ))}
+          </EmojiDiv>
+        </FeelingFormDiv>
+      )}
+    </AnimatePresence>
   );
 };
 
-const FeelingFormDiv = styled.div`
+const FeelingFormDiv = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;

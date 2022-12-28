@@ -2,99 +2,43 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { dbService } from "../fbase";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import FeelingForm from "../Components/FeelingForm";
 import FeelingList from "../Components/FeelingList";
 import Drug from "../Components/Drug";
+import DrugList from "../Components/DrugList";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-function Home() {
-  // 전체 드러그, 필링 데이터 예정/////////////
-  // => 전체 목록 보기 위해 필요
-
-  // '오늘' 드러그, 필링 데이터 (배열)
-  const [todayDrugData, setTodayDrugData] = useState([]);
-  const [todayFeelingData, setTodayFeelingData] = useState([]);
-  const [feelingloading, setFeelingLoading] = useState(false);
-  const [drugloading, setDrugLoading] = useState(false);
+function Home({
+  todayDrugData,
+  todayFeelingData,
+  drugloading,
+  allDrugData,
+  allFeelingData,
+}) {
+  const [drugClick, setDrugClick] = useState(true);
+  const [popLayout, setPopLayout] = useState(false);
 
   useEffect(() => {
-    setDrugLoading(false);
-    setFeelingLoading(false);
-    dbService
-      .collection(`테스트`)
-      .orderBy("time")
-      .onSnapshot((s) => {
-        const array = s.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        // 모든 데이터 불러와
-        let todayData = array.filter(
-          (data) =>
-            dayjs(data.time).format("YYYY-M-D") === dayjs().format("YYYY-M-D")
-        );
-        //오늘자의 데이터만 필터링하기
-        setTodayFeelingData(todayData);
-        setFeelingLoading(true);
-      });
-
-    dbService
-      .collection(`드러그`)
-      .orderBy("dateID")
-      .onSnapshot((d) => {
-        const array = d.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        // 드러그 데이터의 중복 생성 방지
-        returnTodayrDrugData(array);
-      });
-  }, []);
-
-  const returnTodayrDrugData = (array) => {
-    // 오늘자의 드러그 데이터만 필터링 반환
-    let returnTodayData = array.filter(
-      (item) => item.dateID === dayjs().format("YYYY-M-D")
-    )[0];
-    if (!returnTodayData) {
-      console.log("init");
-      // 오늘 약이 기록되지 않아 기본 데이터 생성
-      drugInit();
-    } else {
-      // 오늘 기록된 약이 있으므로 기존 데이터 불러오기
-      // console.log("실행");
-      // console.log(array);
-      setTodayDrugData(returnTodayData);
-      setDrugLoading(true); // true 로딩끝
-    }
-  };
-
-  const drugInit = async () => {
-    // 오늘 드러그 데이터가 없으므로 최초 생성
-    // 중복 방지를 위해 필요
-
-    const drugData = {
-      dateID: dayjs().format("YYYY-M-D"),
-      day: false,
-      night: false,
-      sleep: false,
-      whenEatDrugAtDay: "",
-      whenEatDrugAtNight: "",
-      whenEatDrugAtSleep: "",
-    };
-
-    await dbService.collection(`드러그`).add(drugData);
-  };
+    console.log(!drugClick);
+  }, [drugClick]);
   return (
-    <Main>
-      <FeelingForm />
-      <Drug todayDrugData={todayDrugData} Drugloading={drugloading} />
-      <FeelingList todayFeelingData={todayFeelingData} />
-    </Main>
+    <AnimatePresence mode="sync">
+      <Main>
+        {drugClick && <FeelingForm drugClick={drugClick} />}
+        <Drug
+          todayDrugData={todayDrugData}
+          Drugloading={drugloading}
+          setDrugClick={setDrugClick}
+          drugClick={drugClick}
+        />{" "}
+        {!drugClick && <DrugList allDrugData={allDrugData} />}
+        {/* <Drug todayDrugData={todayDrugData} Drugloading={drugloading} /> */}
+        {drugClick && <FeelingList todayFeelingData={todayFeelingData} />}
+      </Main>
+    </AnimatePresence>
   );
 }
 
