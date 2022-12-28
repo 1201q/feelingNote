@@ -29,7 +29,7 @@ export default function Root({ isLoggedIn }) {
               <Route exact path="/">
                 <Home />
               </Route>
-              <Route path="/drug">
+              <Route exact path="/drug">
                 <Druginfo />
               </Route>
             </Container>
