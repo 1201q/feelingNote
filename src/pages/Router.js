@@ -3,7 +3,7 @@ import Home from ".//Home";
 import Auth from ".//Auth";
 import Druginfo from ".//Druginfo";
 
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
 // home
@@ -20,7 +20,7 @@ dayjs.extend(customParseFormat);
 
 export default function Root({ isLoggedIn }) {
   return (
-    <Router>
+    <Router basename="/feelingNote">
       <Switch>
         <>
           {isLoggedIn ? (
