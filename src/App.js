@@ -3,6 +3,7 @@ import Router from "./pages/Router";
 import { useEffect, useState } from "react";
 import { authService } from "./fbase";
 import { Orbit } from "@uiball/loaders";
+import { BrowserRouter } from "react-router-dom";
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -40,7 +41,9 @@ const App = () => {
   return (
     <div>
       {loading ? (
-        <Router isLoggedIn={isLoggedIn} userData={userData} />
+        <BrowserRouter basename="feelingNote">
+          <Router isLoggedIn={isLoggedIn} userData={userData} />
+        </BrowserRouter>
       ) : (
         <div
           style={{
