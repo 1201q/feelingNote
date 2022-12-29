@@ -84,6 +84,7 @@ export default function Root({ isLoggedIn }) {
       day: false,
       night: false,
       sleep: false,
+      sideEffect: "",
       whenEatDrugAtday: "",
       whenEatDrugAtnight: "",
       whenEatDrugAtsleep: "",
