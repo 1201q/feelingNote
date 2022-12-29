@@ -80,7 +80,9 @@ const DrugList = ({ allDrugData }) => {
               </DrugDateAndWhenEat>
               <SideEffect>
                 <div style={{ paddingLeft: "10px" }}> </div>
-                {data.sideEffect ? data.sideEffect : "부작용을 적지 않았어요."}
+                {data.sideEffect
+                  ? data.sideEffect
+                  : "상태를 작성하지 않았어요."}
               </SideEffect>
             </ResolutionDiv>
           </DrugComponent>

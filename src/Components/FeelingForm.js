@@ -68,9 +68,9 @@ const FeelingForm = ({}) => {
       // animate={{ opacity: 1, scale: 1 }}
       // exit={{ height: "0%", scale: 0, opacity: 0 }}
       >
-        <TimeDiv>
+        {/* <TimeDiv>
           <p>{dayjs(stopwatchTime).format("HH시 mm분 ss초")}</p>
-        </TimeDiv>
+        </TimeDiv> */}
         <FormDiv onSubmit={onFeelingDataSubmit}>
           <input
             type="text"
@@ -176,7 +176,7 @@ const FormDiv = styled.form`
 
 const ProgressBarDiv = styled.div`
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 `;
 
 const EmojiDiv = styled.div`

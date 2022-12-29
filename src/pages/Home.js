@@ -7,6 +7,7 @@ import FeelingForm from "../Components/FeelingForm";
 import FeelingList from "../Components/FeelingList";
 import Drug from "../Components/Drug";
 import DrugList from "../Components/DrugList";
+import SideEffect from "../Components/SideEffect";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
@@ -32,6 +33,7 @@ function Home({
           Drugloading={drugloading}
           layoutId="drug"
         />
+        <SideEffect todayDrugData={todayDrugData} />
         <FeelingList todayFeelingData={todayFeelingData} />
       </Main>
     </AnimatePresence>
