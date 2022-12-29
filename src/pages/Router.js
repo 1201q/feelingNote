@@ -6,7 +6,7 @@ import Header from "../Components/Header";
 import { dbService } from "../fbase";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
 import dayjs from "dayjs";
 
@@ -93,7 +93,7 @@ export default function Root({ isLoggedIn }) {
   };
 
   return (
-    <AnimatePresence>
+    <AnimateSharedLayout>
       <Router>
         <Switch>
           <>
@@ -113,6 +113,7 @@ export default function Root({ isLoggedIn }) {
                 </Route>
                 <Route exact path="/drug">
                   <Druginfo
+                    allDrugData={allDrugData}
                     todayDrugData={todayDrugData}
                     drugloading={drugloading}
                   />
@@ -126,7 +127,7 @@ export default function Root({ isLoggedIn }) {
           </>
         </Switch>
       </Router>
-    </AnimatePresence>
+    </AnimateSharedLayout>
   );
 }
 

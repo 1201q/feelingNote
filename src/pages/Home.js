@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { dbService } from "../fbase";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import FeelingForm from "../Components/FeelingForm";
 import FeelingList from "../Components/FeelingList";
 import Drug from "../Components/Drug";
@@ -18,25 +18,21 @@ function Home({
   allDrugData,
   allFeelingData,
 }) {
-  const [drugClick, setDrugClick] = useState(true);
-  const [popLayout, setPopLayout] = useState(false);
-
-  useEffect(() => {
-    console.log(!drugClick);
-  }, [drugClick]);
   return (
     <AnimatePresence mode="sync">
-      <Main>
-        {drugClick && <FeelingForm drugClick={drugClick} />}
+      <Main
+        layout
+        transition={{ type: "spring", duration: 0.5, delay: 0.2, bounce: 0.3 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <FeelingForm />
         <Drug
           todayDrugData={todayDrugData}
           Drugloading={drugloading}
-          setDrugClick={setDrugClick}
-          drugClick={drugClick}
-        />{" "}
-        {!drugClick && <DrugList allDrugData={allDrugData} />}
-        {/* <Drug todayDrugData={todayDrugData} Drugloading={drugloading} /> */}
-        {drugClick && <FeelingList todayFeelingData={todayFeelingData} />}
+          layoutId="drug"
+        />
+        <FeelingList todayFeelingData={todayFeelingData} />
       </Main>
     </AnimatePresence>
   );
@@ -58,24 +54,6 @@ const Main = styled(motion.div)`
     font-size: 20px;
     text-align: left;
     font-weight: 500;
-  }
-`;
-
-const LoadingDrug = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 70%;
-  max-width: 900px;
-  min-height: 101px;
-  background-color: white;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  padding: 20px;
-  padding-bottom: 29px;
-
-  @media screen and (max-width: 768px) {
-    width: 82%;
   }
 `;
 

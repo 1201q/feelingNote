@@ -6,10 +6,10 @@ import { motion } from "framer-motion";
 const FeelingList = ({ todayFeelingData }) => {
   return (
     <FeelingListDiv
-      layout
-      transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
-      initial={{ height: "100%", opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
+    // layout
+    // transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
+    // initial={{ height: "100%", opacity: 0, scale: 0.8 }}
+    // animate={{ opacity: 1, scale: 1 }}
     >
       <Header>시간순</Header>
       <ComponentDiv>

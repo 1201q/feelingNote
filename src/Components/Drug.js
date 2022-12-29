@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { dbService } from "../fbase";
-import { motion } from "framer-motion";
+import { motion, AnimateSharedLayout } from "framer-motion";
 import { Link, useHistory } from "react-router-dom";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-const Drug = ({ todayDrugData, setDrugClick, drugClick }) => {
+const Drug = ({ todayDrugData }) => {
   const [dayOnOff, setDayOnOff] = useState(todayDrugData.day);
   const [nightOnOff, setNightOnOff] = useState(todayDrugData.night);
   const [sleepOnOff, setSleepOnOff] = useState(todayDrugData.sleep);
@@ -72,25 +72,19 @@ const Drug = ({ todayDrugData, setDrugClick, drugClick }) => {
   };
 
   const history = useHistory();
-  const [click, setClick] = useState(false);
 
   return (
-    <DrugDiv
-      layout
-      transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
-      initial={{ height: "100%", opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-    >
+    <DrugDiv layoutId="drug">
       <Header
         onClick={() => {
-          setDrugClick(!drugClick);
+          history.push("/drug");
         }}
         whileHover={{ scale: 1.0, background: "white " }}
         whileTap={{
           scale: 0.98,
-          background: "rgba(176,184,193, 0.2)",
+          background: "rgba(176,184,193, 0.1)",
         }}
-        transition={{ duration: 0.1 }}
+        transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
       >
         약
       </Header>
@@ -185,7 +179,7 @@ const DrugDiv = styled(motion.div)`
   flex-direction: column;
   align-items: center;
   width: 70%;
-  height: 110px;
+  height: 104px;
   max-width: 900px;
   background-color: white;
   border-radius: 20px;

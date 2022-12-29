@@ -1,11 +1,17 @@
 import Drug from "../Components/Drug";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, AnimateSharedLayout } from "framer-motion";
+import DrugList from "../Components/DrugList";
 
-const Druginfo = ({ todayDrugData, drugloading }) => {
+const Druginfo = ({ allDrugData, todayDrugData, drugloading }) => {
   return (
     <Main>
-      <Drug todayDrugData={todayDrugData} Drugloading={drugloading} />
+      <Drug
+        todayDrugData={todayDrugData}
+        Drugloading={drugloading}
+        layoutId="title1"
+      />
+      <DrugList allDrugData={allDrugData} />
     </Main>
   );
 };
