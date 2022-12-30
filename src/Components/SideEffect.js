@@ -3,6 +3,8 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import { motion, AnimatePresence } from "framer-motion";
 import { dbService } from "../fbase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const SideEffect = ({ todayDrugData }) => {
   const [sideEffectText, setSideEffectText] = useState("");
@@ -31,7 +33,11 @@ const SideEffect = ({ todayDrugData }) => {
         />
       </FormDiv>
       {todayDrugData.sideEffect && (
-        <MyTodaySideEffect>
+        <MyTodaySideEffect
+          onClick={() => {
+            setSideEffectText(todayDrugData.sideEffect);
+          }}
+        >
           <div style={{ marginRight: "10px" }}></div>
           {todayDrugData.sideEffect && todayDrugData.sideEffect}
         </MyTodaySideEffect>
@@ -75,13 +81,12 @@ const FormDiv = styled.form`
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  margin-bottom: 15px;
 
   input {
     font-family: "Pretendard-Regular";
     width: 100%;
     padding: 12px 12px;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 200;
     background: none;
     border: none;
@@ -107,6 +112,8 @@ const MyTodaySideEffect = styled.div`
   padding: 8px 0px;
   font-weight: 800;
   font-size: 18px;
+  margin-top: 15px;
+  cursor: pointer;
 `;
 
 export default SideEffect;
