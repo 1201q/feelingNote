@@ -26,50 +26,32 @@ const DrugList = ({ allDrugData }) => {
       {allDrugData.map((data, index) => (
         <DrugComponent key={index}>
           <DrugComponentHeader>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-              }}
-            >
-              <Date>{dayjs(data.dateID).format("MM월 DD일")}</Date>{" "}
+            <DateWhenEat>
+              <Date>{dayjs(data.dateID).format("MM.DD")}</Date>{" "}
               <WhenEat>
-                <WhenEatBtn
+                <WhenEatDot
                   bgColor={
                     data.whenEatDrugAtday !== ""
                       ? "rgba(120, 168, 135, 0.7)"
                       : "rgba(240,68,82, 0.6)"
                   }
-                >
-                  {/* {data.whenEatDrugAtday !== ""
-                    ? dayjs(data.whenEatDrugAtday).format("HH:mm")
-                    : "안먹음"} */}
-                </WhenEatBtn>{" "}
-                <WhenEatBtn
+                ></WhenEatDot>
+                <WhenEatDot
                   bgColor={
                     data.whenEatDrugAtnight !== ""
                       ? "rgba(120, 168, 135, 0.7)"
                       : "rgba(240,68,82, 0.6)"
                   }
-                >
-                  {/* {data.whenEatDrugAtnight !== ""
-                    ? dayjs(data.whenEatDrugAtnight).format("HH:mm")
-                    : "안먹음"} */}
-                </WhenEatBtn>{" "}
-                <WhenEatBtn
+                ></WhenEatDot>
+                <WhenEatDot
                   bgColor={
                     data.whenEatDrugAtsleep !== ""
                       ? "rgba(120, 168, 135, 0.7)"
                       : "rgba(240,68,82, 0.6)"
                   }
-                >
-                  {/* {data.whenEatDrugAtsleep !== ""
-                    ? dayjs(data.whenEatDrugAtsleep).format("HH:mm")
-                    : "안먹음"} */}
-                </WhenEatBtn>{" "}
+                ></WhenEatDot>
               </WhenEat>
-            </div>
+            </DateWhenEat>
 
             <SideEffect
               bgColor={data.sideEffect ? "#ffeeee" : "#f2f4f6"}
@@ -172,27 +154,40 @@ const DrugComponentHeader = styled.div`
   align-items: flex-start;
 `;
 
-const WhenEat = styled.div`
-  width: 100%;
-  height: 20px;
+const DateWhenEat = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 3px;
+  flex-direction: column;
+  width: 10%;
+  min-width: 47px;
+  height: 100%;
 `;
 
-const WhenEatBtn = styled.button`
+const WhenEat = styled.div`
+  width: 20%;
+  min-width: 50px;
+  display: flex;
+  justify-content: space-around;
+  padding-left: 2.5px;
+
+  @media screen and (max-width: 768px) {
+    width: 10%;
+    min-width: 38px;
+    display: flex;
+    justify-content: space-around;
+    padding-left: 2.5px;
+  }
+`;
+
+const WhenEatDot = styled.div`
   font-family: "Pretendard-Regular";
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   border: none;
-  text-align: center;
-  width: 12px;
-  height: 12px;
-  font-size: 0px;
+  font-size: 1px;
   font-weight: 800;
   background-color: ${(props) => props.bgColor};
 `;
@@ -201,11 +196,15 @@ const Date = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 90px;
+  width: 100%;
   height: 22px;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 800;
   padding-left: 2px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 const SideEffect = styled.div`
   display: flex;
@@ -214,16 +213,15 @@ const SideEffect = styled.div`
   height: 100%;
   font-size: 15px;
   font-weight: 800;
-  background-color: #ffeeee;
   background-color: ${(props) => props.bgColor};
   border-radius: 10px;
-  color: #f04452;
+
   color: ${(props) => props.fontColor};
 
   @media screen and (max-width: 768px) {
     width: 100%;
     font-size: 15px;
-    margin-left: 0px;
+    margin-left: 7px;
   }
 `;
 
