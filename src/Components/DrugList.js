@@ -23,83 +23,66 @@ const DrugList = ({ allDrugData }) => {
       animate={{ opacity: 1, scale: 1 }}
     >
       <Header>{currentMonth}월의 기록</Header>
-      <Component>
-        {allDrugData.map((data, index) => (
-          <DrugComponent key={index}>
-            <DrugComponentHeader>
-              <Date>{dayjs(data.dateID).format("MM월 DD일")}</Date>
+      {allDrugData.map((data, index) => (
+        <DrugComponent key={index}>
+          <DrugComponentHeader>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+              }}
+            >
+              <Date>{dayjs(data.dateID).format("MM월 DD일")}</Date>{" "}
               <WhenEat>
                 <WhenEatBtn
                   bgColor={
                     data.whenEatDrugAtday !== ""
-                      ? "rgba(120, 168, 135, 0.1)"
-                      : "#ffeeee"
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
                   }
                 >
-                  {/* <Icon
-                    src={require("../icons/sun.png")}
-                    name="sleep"
-                    imgwidth="18px"
-                    imgheight="18px"
-                    imgmargin={
-                      data.whenEatDrugAtday !== "" ? "0px 5px 0px 0px" : "0px"
-                    }
-                  /> */}
-                  {data.whenEatDrugAtday !== ""
+                  {/* {data.whenEatDrugAtday !== ""
                     ? dayjs(data.whenEatDrugAtday).format("HH:mm")
-                    : "안먹음"}
+                    : "안먹음"} */}
                 </WhenEatBtn>{" "}
                 <WhenEatBtn
                   bgColor={
                     data.whenEatDrugAtnight !== ""
-                      ? "rgba(120, 168, 135, 0.1)"
-                      : "#ffeeee"
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
                   }
                 >
-                  {/* <Icon
-                    src={require("../icons/night-mode.png")}
-                    name="sleep"
-                    imgwidth="18px"
-                    imgheight="18px"
-                    imgmargin={
-                      data.whenEatDrugAtnight !== "" ? "0px 5px 0px 0px" : "0px"
-                    }
-                  /> */}
-                  {data.whenEatDrugAtnight !== ""
+                  {/* {data.whenEatDrugAtnight !== ""
                     ? dayjs(data.whenEatDrugAtnight).format("HH:mm")
-                    : "안먹음"}
+                    : "안먹음"} */}
                 </WhenEatBtn>{" "}
                 <WhenEatBtn
                   bgColor={
                     data.whenEatDrugAtsleep !== ""
-                      ? "rgba(120, 168, 135, 0.1)"
-                      : "#ffeeee"
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
                   }
                 >
-                  {/* <Icon
-                    src={require("../icons/half-moon.png")}
-                    name="sleep"
-                    imgwidth="18px"
-                    imgheight="18px"
-                    imgmargin={
-                      data.whenEatDrugAtsleep !== "" ? "0px 5px 0px 0px" : "0px"
-                    }
-                  /> */}
-                  {data.whenEatDrugAtsleep !== ""
+                  {/* {data.whenEatDrugAtsleep !== ""
                     ? dayjs(data.whenEatDrugAtsleep).format("HH:mm")
-                    : "안먹음"}
+                    : "안먹음"} */}
                 </WhenEatBtn>{" "}
               </WhenEat>
-            </DrugComponentHeader>
+            </div>
 
-            {data.sideEffect && (
-              <SideEffect>
-                <div style={{ padding: "5px 10px" }}>{data.sideEffect}</div>
-              </SideEffect>
-            )}
-          </DrugComponent>
-        ))}
-        {/* <DrugComponent>
+            <SideEffect
+              bgColor={data.sideEffect ? "#ffeeee" : "#f2f4f6"}
+              fontColor={data.sideEffect ? "#f04452" : "#6E7986"}
+            >
+              <div style={{ padding: "5px 10px" }}>
+                {data.sideEffect ? data.sideEffect : "작성하지 않았어요."}
+              </div>
+            </SideEffect>
+          </DrugComponentHeader>
+        </DrugComponent>
+      ))}
+      {/* <DrugComponent>
           <ResolutionDiv>
             <DrugDateAndWhenEat>
               <Date>1</Date>
@@ -142,10 +125,22 @@ const DrugList = ({ allDrugData }) => {
             </SideEffect>
           </ResolutionDiv>
         </DrugComponent> */}
-      </Component>
     </DrugListDiv>
   );
 };
+
+const Header = styled.div`
+  font-family: "SUIT Variable", sans-serif;
+  font-weight: 900;
+  font-size: 27px;
+  text-align: left;
+  width: 100%;
+  color: #333d4b;
+  margin-left: 0px;
+  margin-bottom: 9px;
+
+  border-radius: 10px;
+`;
 
 const DrugListDiv = styled(motion.div)`
   display: flex;
@@ -164,33 +159,26 @@ const DrugListDiv = styled(motion.div)`
   }
 `;
 
-const Component = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
 const DrugComponent = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  background-color: white;
+  margin-bottom: 17px;
   border-radius: 10px;
-  padding-top: 19px;
   font-weight: 800;
   font-size: 17px;
 `;
 
 const DrugComponentHeader = styled.div`
   display: flex;
+  align-items: flex-start;
 `;
 
 const WhenEat = styled.div`
   width: 100%;
-  height: 30px;
+  height: 20px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  padding-left: 3px;
 `;
 
 const WhenEatBtn = styled.button`
@@ -199,26 +187,23 @@ const WhenEatBtn = styled.button`
   justify-content: center;
   align-items: center;
   margin-right: 10px;
-  border-radius: 10px;
+  border-radius: 50%;
   border: none;
   text-align: center;
-  width: 20%;
-  max-width: 53px;
-  height: 20px;
-  font-size: 12px;
+  width: 12px;
+  height: 12px;
+  font-size: 0px;
   font-weight: 800;
-  /* background-color: rgba(120, 168, 135, 0.1); */
   background-color: ${(props) => props.bgColor};
-  color: #68a078;
 `;
 
 const Date = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100px;
-  height: 30px;
-  font-size: 14px;
+  width: 90px;
+  height: 22px;
+  font-size: 17px;
   font-weight: 800;
   padding-left: 2px;
 `;
@@ -226,41 +211,20 @@ const SideEffect = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  height: 100%;
   font-size: 15px;
   font-weight: 800;
-  margin-left: 0px;
-  margin-top: 10px;
-  padding: 0px 0px;
-  background-color: #f2f4f6;
+  background-color: #ffeeee;
+  background-color: ${(props) => props.bgColor};
   border-radius: 10px;
-  color: #6b7684;
+  color: #f04452;
+  color: ${(props) => props.fontColor};
 
   @media screen and (max-width: 768px) {
     width: 100%;
-    font-size: 16px;
+    font-size: 15px;
     margin-left: 0px;
-    margin-top: 10px;
   }
-`;
-
-const Header = styled.div`
-  font-family: "SUIT Variable", sans-serif;
-  font-weight: 900;
-  font-size: 27px;
-  text-align: left;
-  width: 100%;
-  color: #333d4b;
-  margin-left: 0px;
-
-  border-radius: 10px;
-`;
-
-const Icon = styled(motion.img)`
-  width: ${(props) => props.imgwidth};
-  height: ${(props) => props.imgheight};
-  padding: ${(props) => props.imgpadding};
-  margin: ${(props) => props.imgmargin};
-  transition: all 0.3s ease;
 `;
 
 export default DrugList;
