@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
-import { dbService } from "../fbase";
+import { dbService } from "../../fbase";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { Link, useHistory } from "react-router-dom";
 
@@ -100,7 +100,7 @@ const Drug = ({ todayDrugData }) => {
           fontSize={dayOnOff ? "20px" : "16px"}
         >
           <Icon
-            src={require("../icons/sun.png")}
+            src={require("../../icons/sun.png")}
             imgwidth="33px"
             imgheight="33px"
             imgmargin={dayOnOff ? "0px 3px 0px 0px" : "0px"}
@@ -120,7 +120,7 @@ const Drug = ({ todayDrugData }) => {
           fontSize={nightOnOff ? "20px" : "19px"}
         >
           <Icon
-            src={require("../icons/night-mode.png")}
+            src={require("../../icons/night-mode.png")}
             imgwidth="25px"
             imgheight="25px"
             imgmargin={nightOnOff ? "0px 6px 0px 0px" : "0px"}
@@ -140,7 +140,7 @@ const Drug = ({ todayDrugData }) => {
           fontSize={sleepOnOff ? "20px" : "16px"}
         >
           <Icon
-            src={require("../icons/half-moon.png")}
+            src={require("../../icons/half-moon.png")}
             name="sleep"
             imgwidth="25px"
             imgheight="25px"

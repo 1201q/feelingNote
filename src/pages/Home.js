@@ -3,11 +3,11 @@ import styled from "styled-components";
 import dayjs from "dayjs";
 import { dbService } from "../fbase";
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
-import FeelingForm from "../Components/FeelingForm";
-import FeelingList from "../Components/FeelingList";
-import Drug from "../Components/Drug";
-import DrugList from "../Components/DrugList";
-import SideEffect from "../Components/SideEffect";
+import FeelingForm from "../Components/Feeling/FeelingForm";
+import FeelingList from "../Components/Feeling/FeelingList";
+import Drug from "../Components/Drug/Drug";
+import DrugList from "../Components/Effect/EffectList";
+import EffectForm from "../Components/Effect/EffectForm";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
@@ -33,7 +33,7 @@ function Home({
           Drugloading={drugloading}
           layoutId="drug"
         />
-        <SideEffect todayDrugData={todayDrugData} />
+        <EffectForm todayDrugData={todayDrugData} allDrugData={allDrugData} />
         <FeelingList todayFeelingData={todayFeelingData} />
       </Main>
     </AnimatePresence>

@@ -3,6 +3,7 @@ import Home from ".//Home";
 import Auth from ".//Auth";
 import Druginfo from ".//Druginfo";
 import Header from "../Components/Header";
+import Effectinfo from "../pages/Effectinfo";
 import { dbService } from "../fbase";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
@@ -117,6 +118,12 @@ export default function Root({ isLoggedIn }) {
                     allDrugData={allDrugData}
                     todayDrugData={todayDrugData}
                     drugloading={drugloading}
+                  />
+                </Route>
+                <Route exact path="/effect">
+                  <Effectinfo
+                    allDrugData={allDrugData}
+                    todayDrugData={todayDrugData}
                   />
                 </Route>
               </Container>

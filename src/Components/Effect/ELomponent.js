@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-const DLcomponent = ({ data, index }) => {
+const DLcomponent = ({ data }) => {
   return (
-    <DLComponentDiv>
+    <ELComponentDiv>
       <Header>
         <Date>{dayjs(data.dateID).format("MM.DD")}</Date>
         <WhenEat>
@@ -35,7 +35,7 @@ const DLcomponent = ({ data, index }) => {
           ></WhenEatDot>
         </WhenEat>
       </Header>
-      <SideEffect
+      <Effect
         bgColor={data.sideEffect ? "#f2f4f6" : "white"}
         fontColor={data.sideEffect ? "#191F28" : "#6E7986"}
       >
@@ -44,11 +44,11 @@ const DLcomponent = ({ data, index }) => {
         ) : (
           <div>작성하지 않았어요.</div>
         )}
-      </SideEffect>
-    </DLComponentDiv>
+      </Effect>
+    </ELComponentDiv>
   );
 };
-const DLComponentDiv = styled.div`
+const ELComponentDiv = styled.div`
   width: 100%;
   margin-top: 15px;
   border-radius: 10px;
@@ -106,7 +106,7 @@ const Date = styled.div`
   }
 `;
 
-const SideEffect = styled.div`
+const Effect = styled.div`
   width: 100%;
   height: 100%;
   font-size: 19px;

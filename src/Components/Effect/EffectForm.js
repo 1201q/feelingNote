@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { motion, AnimatePresence } from "framer-motion";
-import { dbService } from "../fbase";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { dbService } from "../../fbase";
 
-const SideEffect = ({ todayDrugData }) => {
+const EffectForm = ({ todayDrugData }) => {
   const [sideEffectText, setSideEffectText] = useState("");
 
   const onSideEffectDataSubmit = async (e) => {
@@ -18,10 +17,22 @@ const SideEffect = ({ todayDrugData }) => {
     await dbService.doc(`드러그/${todayDrugData.id}`).update(data);
     setSideEffectText("");
   };
-
+  const history = useHistory();
   return (
-    <SideEffectDiv>
-      <Header>상태</Header>
+    <EffectFormDiv layoutId="effect">
+      <Header
+        onClick={() => {
+          history.push("/effect");
+        }}
+        whileHover={{ scale: 1.0, background: "white " }}
+        whileTap={{
+          scale: 0.98,
+          background: "rgba(176,184,193, 0.1)",
+        }}
+        transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
+      >
+        상태
+      </Header>
       <FormDiv onSubmit={onSideEffectDataSubmit}>
         <input
           type="text"
@@ -42,7 +53,7 @@ const SideEffect = ({ todayDrugData }) => {
           {todayDrugData.sideEffect && todayDrugData.sideEffect}
         </MyTodaySideEffect>
       )}
-    </SideEffectDiv>
+    </EffectFormDiv>
   );
 };
 
@@ -57,9 +68,10 @@ const Header = styled(motion.div)`
   padding-bottom: 4px;
   margin-bottom: 15px;
   border-radius: 10px;
+  cursor: pointer;
 `;
 
-const SideEffectDiv = styled(motion.div)`
+const EffectFormDiv = styled(motion.div)`
   -webkit-tap-highlight-color: transparent;
   display: flex;
   flex-direction: column;
@@ -116,4 +128,4 @@ const MyTodaySideEffect = styled.div`
   cursor: pointer;
 `;
 
-export default SideEffect;
+export default EffectForm;

@@ -1,7 +1,7 @@
-import Drug from "../Components/Drug";
+import Drug from "../Components/Drug/Drug";
 import styled from "styled-components";
 import { motion, AnimateSharedLayout } from "framer-motion";
-import DrugList from "../Components/DrugList";
+import DrugList from "../Components/Drug/DrugList"; // 향후 sideEffect로 가야지
 
 const Druginfo = ({ allDrugData, todayDrugData, drugloading }) => {
   return (

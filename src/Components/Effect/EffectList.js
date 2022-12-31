@@ -2,31 +2,30 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
-
-import DLcomponent from "./DLcomponent";
+import ELcomponent from "./ELomponent";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-const DrugList = ({ allDrugData }) => {
+const EffectList = ({ allDrugData }) => {
   const [currentMonth, setCurrentMonth] = useState(dayjs().get("month") + 1);
 
   return (
-    <DrugListDiv
+    <EffectListDiv
       transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
       initial={{ height: "100%", opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
     >
-      <Header>{currentMonth}월의 기록</Header>
+      <Header>{currentMonth}월의 상태 기록</Header>
       {allDrugData.map((data, index) => (
-        <DLcomponent data={data} index={index} />
+        <ELcomponent data={data} index={index} />
       ))}
-    </DrugListDiv>
+    </EffectListDiv>
   );
 };
 
 //전체 div + 애니메이션
-const DrugListDiv = styled(motion.div)`
+const EffectListDiv = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -54,4 +53,4 @@ const Header = styled.div`
   border-radius: 10px;
 `;
 
-export default DrugList;
+export default EffectList;

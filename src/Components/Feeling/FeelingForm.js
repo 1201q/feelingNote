@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import useInterval from "../hooks/useInterval";
-import { dbService } from "../fbase";
+import useInterval from "../../hooks/useInterval";
+import { dbService } from "../../fbase";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import ProgressBar from "@ramonak/react-progress-bar";
@@ -112,7 +112,7 @@ const FeelingForm = ({}) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 transition={{ duration: 0.2 }}
-                src={require(`../icons/${item}.png`)}
+                src={require(`../../icons/${item}.png`)}
               />
             </EmojiBtn>
           ))}

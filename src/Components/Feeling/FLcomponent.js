@@ -10,7 +10,7 @@ const FLcomponent = ({ data, index }) => {
   return (
     <FLcomponentDiv>
       <Component>
-        <ComponentImg src={require(`../icons/${data.feeling}.png`)} />
+        <ComponentImg src={require(`../../icons/${data.feeling}.png`)} />
         {data.text}
       </Component>
       <FLcomponentTime>{dayjs(data.time).format("HH시 mm분")}</FLcomponentTime>
