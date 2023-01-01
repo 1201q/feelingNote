@@ -2,6 +2,7 @@ import Drug from "../Components/Drug/Drug";
 import styled from "styled-components";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import DrugList from "../Components/Drug/DrugList"; // 향후 sideEffect로 가야지
+import Calendar from "../Components/Drug/Calendar";
 
 const Druginfo = ({ allDrugData, todayDrugData, drugloading }) => {
   return (
@@ -12,6 +13,7 @@ const Druginfo = ({ allDrugData, todayDrugData, drugloading }) => {
         layoutId="title1"
       />
       <DrugList allDrugData={allDrugData} />
+      <Calendar />
     </Main>
   );
 };

@@ -9,7 +9,7 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
 
-import Calendar from "../Components/Calendar";
+import Calendar from "../Components/Drug/Calendar";
 
 import dayjs from "dayjs";
 
