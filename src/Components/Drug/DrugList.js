@@ -20,7 +20,7 @@ const DrugList = ({ allDrugData }) => {
       initial={{ height: "100%", opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
     >
-      <Header>{currentMonth}월의 약 기록</Header>
+      <Header>약 기록</Header>
       <Component>
         {allDrugData.map((data, index) => (
           <DrugComponent key={index}>

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
-const Calendar = () => {
+const Calendar = ({ allDrugData }) => {
   const today = dayjs();
   const thisMonthStart = today.startOf("month");
   const thisMonthEnd = today.endOf("month"); //월요일이 0 일요일이 6
@@ -19,6 +19,13 @@ const Calendar = () => {
 
   let arr = [];
   let CalenDate = ["일", "월", "화", "수", "목", "금", "토"];
+
+  useEffect(() => {
+    // console.log(allDrugData);
+    // console.log(allDrugData.map((data) => data.day));
+    // console.log(allDrugData.map((data) => data.night));
+    // console.log(allDrugData.map((data) => data.sleep));
+  }, [allDrugData]);
 
   const F = (param, format) => {
     return Number(param.format(format));
@@ -35,47 +42,100 @@ const Calendar = () => {
     for (let i = F(selectMonthStart, "DD"); i <= F(selectMonthEnd, "DD"); i++) {
       arr.push(i);
     }
+    console.log(arr.length);
   };
 
   const calenar = () => {
-    let todaybgcolor = false;
+    let Istoday = false;
+    let IsSameMonth = false;
+    let DrugArr = allDrugData.filter(
+      (data) => dayjs(data.dateID).get("month") === selectDay.get("month")
+    );
+    let thisMonthDateArr = DrugArr.map((data) =>
+      dayjs(data.dateID).get("date")
+    );
+
     if (today.get("month") === selectDay.get("month")) {
-      todaybgcolor = true;
+      IsSameMonth = true;
+      if (today.get("year") === selectDay.get("year")) {
+        Istoday = true;
+      }
     }
 
     let calen = [];
     let weekarr = [];
     makeArr();
 
+    // console.log(thisMonthDateArr.map((data, index) => data === arr[i]));
+
+    //일월화수목금토/
     for (let i = 0; i < 7; i++) {
       weekarr.push(<DateHeader>{CalenDate[i]}</DateHeader>);
     }
     calen.push(<Week>{weekarr}</Week>);
     weekarr = [];
+    // ////////////
 
     for (let i = 0; i <= arr.length + 7; i++) {
       if (i % 7 === 0 && i !== 0) {
         calen.push(<Week>{weekarr}</Week>);
         weekarr = [];
         weekarr.push(
-          <Day
-            bgColor={arr[i] === today.get("date") && "red"}
-            fontColor={arr[i] === today.get("date") && "white"}
-          >
-            {arr[i]}
+          <Day>
+            <DayDate
+              bgColor={
+                Istoday === true && arr[i] === today.get("date") ? "red" : ""
+              }
+              fontColor={
+                Istoday === true && arr[i] === today.get("date") ? "white" : ""
+              }
+            >
+              {arr[i]}
+              <div>
+                {console.log(
+                  thisMonthDateArr.filter((data) => data === Number(arr[i]))
+                )}
+              </div>
+            </DayDate>
           </Day>
         );
       } else {
         weekarr.push(
-          <Day
-            bgColor={arr[i] === today.get("date") && todaybgcolor && "red"}
-            fontColor={arr[i] === today.get("date") && "white"}
-          >
-            {arr[i]}
+          <Day>
+            <DayDate
+              bgColor={
+                Istoday === true && arr[i] === today.get("date") ? "red" : ""
+              }
+              fontColor={
+                Istoday === true && arr[i] === today.get("date") ? "white" : ""
+              }
+            >
+              {/* 아래가 달 */}
+              {/* {console.log(
+                `${selectDay.get("year")}-${selectDay.get("month") + 1}-${
+                  arr[i]
+                }`
+              )} */}
+              {/* {console.log(
+                dayjs(
+                  `${selectDay.get("year")}-${selectDay.get("month") + 1}-${
+                    arr[i]
+                  }`
+                ).format("YYYY-MM-DD")
+              )} */}
+
+              {arr[i]}
+              <div>
+                {console.log(
+                  thisMonthDateArr.filter((data) => data === Number(arr[i]))
+                )}
+              </div>
+            </DayDate>
           </Day>
         );
       }
     }
+
     return calen;
   };
 
@@ -173,6 +233,7 @@ const Week = styled.div`
 
 const Day = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 15%;
@@ -180,16 +241,33 @@ const Day = styled.div`
   max-width: 30px;
   min-height: 30px;
   max-height: 30px;
-  background-color: ${(props) => props.bgColor};
+
   border-radius: 100%;
 
   border: none;
   margin: 9px;
-
-  color: ${(props) => (props.fontColor ? props.fontColor : "lightgray")};
+  background-color: ${(props) => props.bgColor};
+  color: ${(props) => (props.fontColor ? props.fontColor : "gray")};
   font-weight: 100;
   font-size: 14px;
   cursor: pointer;
+`;
+
+const DayDate = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 30px;
+  max-width: 30px;
+  min-height: 30px;
+  max-height: 30px;
+
+  border-radius: 100%;
+  text-align: center;
+  background-color: ${(props) => props.bgColor};
+  color: ${(props) => (props.fontColor ? props.fontColor : "gray")};
 `;
 
 const DateHeader = styled.div`
@@ -206,6 +284,36 @@ const DateHeader = styled.div`
 
   color: #6e7986;
   font-weight: 800;
+`;
+
+const WhenEat = styled.div`
+  width: 20%;
+  min-width: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 7px 0px;
+
+  @media screen and (max-width: 768px) {
+    width: 10%;
+    min-width: 38px;
+    display: flex;
+    justify-content: space-around;
+  }
+`;
+
+const WhenEatDot = styled.div`
+  font-family: "Pretendard-Regular";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1px;
+  font-weight: 800;
+  background-color: ${(props) => props.bgColor};
 `;
 
 export default Calendar;

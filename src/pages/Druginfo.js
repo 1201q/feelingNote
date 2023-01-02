@@ -13,7 +13,7 @@ const Druginfo = ({ allDrugData, todayDrugData, drugloading }) => {
         layoutId="title1"
       />
       <DrugList allDrugData={allDrugData} />
-      <Calendar />
+      <Calendar allDrugData={allDrugData} />
     </Main>
   );
 };

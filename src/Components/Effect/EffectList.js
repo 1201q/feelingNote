@@ -3,12 +3,18 @@ import styled, { keyframes, css } from "styled-components";
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
 import ELcomponent from "./ELomponent";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
 
 const EffectList = ({ allDrugData }) => {
-  const [currentMonth, setCurrentMonth] = useState(dayjs().get("month") + 1);
+  const [currentDay, setCurrentDay] = useState(dayjs());
+
+  const onClick = (addORminus) => {
+    setCurrentDay(currentDay.add(addORminus, "month"));
+  };
 
   return (
     <EffectListDiv
@@ -16,10 +22,32 @@ const EffectList = ({ allDrugData }) => {
       initial={{ height: "100%", opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
     >
-      <Header>{currentMonth}월의 상태 기록</Header>
-      {allDrugData.map((data, index) => (
-        <ELcomponent data={data} index={index} />
-      ))}
+      <Header>
+        {currentDay.get("month") + 1}월의 상태 기록
+        <span>
+          <button
+            onClick={() => {
+              onClick(-1);
+            }}
+          >
+            <FontAwesomeIcon icon={faAngleLeft} size="2x" />
+          </button>
+          <button
+            onClick={() => {
+              onClick(1);
+            }}
+          >
+            <FontAwesomeIcon icon={faAngleRight} size="2x" />
+          </button>
+        </span>
+      </Header>
+      {allDrugData
+        .filter(
+          (data) => dayjs(data.dateID).get("month") === currentDay.get("month")
+        )
+        .map((data, index) => (
+          <ELcomponent data={data} index={index} key={index} />
+        ))}
     </EffectListDiv>
   );
 };
@@ -43,6 +71,8 @@ const EffectListDiv = styled(motion.div)`
 `;
 
 const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-family: "SUIT Variable", sans-serif;
   width: 100%;
   font-weight: 900;
@@ -51,6 +81,13 @@ const Header = styled.div`
   color: #333d4b;
   margin-bottom: 4px;
   border-radius: 10px;
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6e7986;
+  }
 `;
 
 export default EffectList;
