@@ -61,6 +61,7 @@ const FeelingListDiv = styled(motion.div)`
   border-radius: 20px;
   margin-bottom: 20px;
   padding: 20px;
+  -webkit-tap-highlight-color: transparent;
 
   @media screen and (max-width: 768px) {
     width: 82%;
@@ -77,6 +78,7 @@ const Header = styled(motion.div)`
   margin-bottom: 2px;
   text-align: left;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 `;
 
 const ComponentDiv = styled.div`
