@@ -102,7 +102,7 @@ const Date = styled.div`
   padding-left: 2px;
 
   @media screen and (max-width: 768px) {
-    font-size: 13px;
+    font-size: 16px;
   }
 `;
 

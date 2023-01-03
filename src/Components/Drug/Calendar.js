@@ -20,13 +20,6 @@ const Calendar = ({ allDrugData }) => {
   let arr = [];
   let CalenDate = ["일", "월", "화", "수", "목", "금", "토"];
 
-  useEffect(() => {
-    // console.log(allDrugData);
-    // console.log(allDrugData.map((data) => data.day));
-    // console.log(allDrugData.map((data) => data.night));
-    // console.log(allDrugData.map((data) => data.sleep));
-  }, [allDrugData]);
-
   const F = (param, format) => {
     return Number(param.format(format));
   };
@@ -49,10 +42,6 @@ const Calendar = ({ allDrugData }) => {
     let IsSameMonth = false;
     let DrugArr = allDrugData.filter(
       (data) => dayjs(data.dateID).get("month") === selectDay.get("month")
-    );
-    // console.log(DrugArr);
-    let thisMonthDateArr = DrugArr.map((data) =>
-      dayjs(data.dateID).get("date")
     );
 
     if (today.get("month") === selectDay.get("month")) {
@@ -85,7 +74,7 @@ const Calendar = ({ allDrugData }) => {
             <DayDate
               bgColor={
                 Istoday === true && arr[i] === today.get("date")
-                  ? "rgba(255,0,64, 0.9)"
+                  ? "#FF1A54"
                   : ""
               }
               fontColor={
