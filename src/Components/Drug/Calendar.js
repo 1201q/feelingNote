@@ -51,6 +51,7 @@ const Calendar = ({ allDrugData }) => {
     let DrugArr = allDrugData.filter(
       (data) => dayjs(data.dateID).get("month") === selectDay.get("month")
     );
+    // console.log(DrugArr);
     let thisMonthDateArr = DrugArr.map((data) =>
       dayjs(data.dateID).get("date")
     );
@@ -91,12 +92,42 @@ const Calendar = ({ allDrugData }) => {
               }
             >
               {arr[i]}
-              <div>
-                {console.log(
-                  thisMonthDateArr.filter((data) => data === Number(arr[i]))
-                )}
-              </div>
-            </DayDate>
+            </DayDate>{" "}
+            {typeof DrugArr.filter(
+              (data) => dayjs(data.dateID).get("date") === arr[i]
+            )[0] == "undefined" ? (
+              <WhenEat></WhenEat>
+            ) : (
+              <WhenEat>
+                <WhenEatDot
+                  bgColor={
+                    DrugArr.filter(
+                      (data) => dayjs(data.dateID).get("date") === arr[i]
+                    )[0].whenEatDrugAtday !== ""
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
+                  }
+                ></WhenEatDot>
+                <WhenEatDot
+                  bgColor={
+                    DrugArr.filter(
+                      (data) => dayjs(data.dateID).get("date") === arr[i]
+                    )[0].whenEatDrugAtnight !== ""
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
+                  }
+                ></WhenEatDot>
+                <WhenEatDot
+                  bgColor={
+                    DrugArr.filter(
+                      (data) => dayjs(data.dateID).get("date") === arr[i]
+                    )[0].whenEatDrugAtsleep !== ""
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
+                  }
+                ></WhenEatDot>
+              </WhenEat>
+            )}
           </Day>
         );
       } else {
@@ -110,27 +141,43 @@ const Calendar = ({ allDrugData }) => {
                 Istoday === true && arr[i] === today.get("date") ? "white" : ""
               }
             >
-              {/* 아래가 달 */}
-              {/* {console.log(
-                `${selectDay.get("year")}-${selectDay.get("month") + 1}-${
-                  arr[i]
-                }`
-              )} */}
-              {/* {console.log(
-                dayjs(
-                  `${selectDay.get("year")}-${selectDay.get("month") + 1}-${
-                    arr[i]
-                  }`
-                ).format("YYYY-MM-DD")
-              )} */}
-
               {arr[i]}
-              <div>
-                {console.log(
-                  thisMonthDateArr.filter((data) => data === Number(arr[i]))
-                )}
-              </div>
             </DayDate>
+            {typeof DrugArr.filter(
+              (data) => dayjs(data.dateID).get("date") === arr[i]
+            )[0] == "undefined" ? (
+              <WhenEat></WhenEat>
+            ) : (
+              <WhenEat>
+                <WhenEatDot
+                  bgColor={
+                    DrugArr.filter(
+                      (data) => dayjs(data.dateID).get("date") === arr[i]
+                    )[0].whenEatDrugAtday !== ""
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
+                  }
+                ></WhenEatDot>
+                <WhenEatDot
+                  bgColor={
+                    DrugArr.filter(
+                      (data) => dayjs(data.dateID).get("date") === arr[i]
+                    )[0].whenEatDrugAtnight !== ""
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
+                  }
+                ></WhenEatDot>
+                <WhenEatDot
+                  bgColor={
+                    DrugArr.filter(
+                      (data) => dayjs(data.dateID).get("date") === arr[i]
+                    )[0].whenEatDrugAtsleep !== ""
+                      ? "rgba(120, 168, 135, 0.7)"
+                      : "rgba(240,68,82, 0.6)"
+                  }
+                ></WhenEatDot>
+              </WhenEat>
+            )}
           </Day>
         );
       }
@@ -232,10 +279,6 @@ const Week = styled.div`
 `;
 
 const Day = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 15%;
   min-width: 30px;
   max-width: 30px;
@@ -249,7 +292,7 @@ const Day = styled.div`
   background-color: ${(props) => props.bgColor};
   color: ${(props) => (props.fontColor ? props.fontColor : "gray")};
   font-weight: 100;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
 `;
 
@@ -287,16 +330,14 @@ const DateHeader = styled.div`
 `;
 
 const WhenEat = styled.div`
-  width: 20%;
-  min-width: 50px;
+  min-width: 22px;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 7px 0px;
+  padding-top: 4px;
 
   @media screen and (max-width: 768px) {
-    width: 10%;
-    min-width: 38px;
+    min-width: 22px;
     display: flex;
     justify-content: space-around;
   }
@@ -307,8 +348,8 @@ const WhenEatDot = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   border: none;
   font-size: 1px;
