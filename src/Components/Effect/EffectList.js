@@ -113,6 +113,7 @@ const Header = styled.div`
     color: #6e7986;
     padding: 0;
     margin-left: 10px;
+    -webkit-tap-highlight-color: transparent;
   }
 `;
 

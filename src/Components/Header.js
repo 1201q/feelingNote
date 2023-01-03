@@ -38,6 +38,10 @@ const HeaderDiv = styled.div`
     width: 90%;
     padding-left: 2px;
   }
+
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
 `;
 
 const HeaderImg = styled.img`
@@ -62,6 +66,7 @@ const LogOutBtn = styled.button`
   cursor: pointer;
   border-radius: 10px;
   margin-right: 14px;
+  -webkit-tap-highlight-color: transparent;
 
   @media screen and (max-width: 768px) {
     justify-content: flex-end;

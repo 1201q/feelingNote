@@ -298,6 +298,7 @@ const Header = styled.div`
   padding-bottom: 0px;
   margin-bottom: 6px;
   border-radius: 10px;
+  -webkit-tap-highlight-color: transparent;
 
   button {
     background: none;

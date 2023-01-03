@@ -34,7 +34,10 @@ function Home({
           layoutId="drug"
         />
         <EffectForm todayDrugData={todayDrugData} allDrugData={allDrugData} />
-        <FeelingList todayFeelingData={todayFeelingData} />
+        <FeelingList
+          todayFeelingData={todayFeelingData}
+          allFeelingData={allFeelingData}
+        />
       </Main>
     </AnimatePresence>
   );

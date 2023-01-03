@@ -60,17 +60,7 @@ const FeelingForm = ({}) => {
 
   return (
     <AnimatePresence>
-      {/* {drugClick && ( */}
-      <FeelingFormDiv
-      // layout
-      // transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
-      // initial={{ height: "100%", opacity: 0, scale: 0.8 }}
-      // animate={{ opacity: 1, scale: 1 }}
-      // exit={{ height: "0%", scale: 0, opacity: 0 }}
-      >
-        {/* <TimeDiv>
-          <p>{dayjs(stopwatchTime).format("HH시 mm분 ss초")}</p>
-        </TimeDiv> */}
+      <FeelingFormDiv>
         <FormDiv onSubmit={onFeelingDataSubmit}>
           <input
             type="text"
@@ -118,8 +108,6 @@ const FeelingForm = ({}) => {
           ))}
         </EmojiDiv>
       </FeelingFormDiv>
-
-      {/* )} */}
     </AnimatePresence>
   );
 };
@@ -139,12 +127,6 @@ const FeelingFormDiv = styled(motion.div)`
   @media screen and (max-width: 768px) {
     width: 82%;
   }
-`;
-
-const TimeDiv = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
 `;
 
 const FormDiv = styled.form`

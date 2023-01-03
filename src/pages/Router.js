@@ -12,6 +12,7 @@ import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import Calendar from "../Components/Drug/Calendar";
 
 import dayjs from "dayjs";
+import Feeling from "./Feeling";
 
 const customParseFormat = require("dayjs/plugin/customParseFormat");
 dayjs.extend(customParseFormat);
@@ -75,6 +76,7 @@ export default function Root({ isLoggedIn }) {
       setTodayDrugData(returnTodayData);
       setAllDrugData(array);
       setDrugLoading(true); // true 로딩끝
+      setFeelingLoading(true);
     }
   };
 
@@ -128,8 +130,13 @@ export default function Root({ isLoggedIn }) {
                     todayDrugData={todayDrugData}
                   />
                 </Route>
-                <Route exact path="/cal">
-                  <Calendar />
+                <Route exact path="/feeling">
+                  {feelingloading && (
+                    <Feeling
+                      todayFeelingData={todayFeelingData}
+                      allFeelingData={allFeelingData}
+                    />
+                  )}
                 </Route>
               </Container>
             ) : (
