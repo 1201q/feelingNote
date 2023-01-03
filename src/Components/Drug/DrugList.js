@@ -8,12 +8,7 @@ dayjs.extend(customParseFormat);
 
 const DrugList = ({ allDrugData }) => {
   const [currentMonth, setCurrentMonth] = useState(dayjs().get("month") + 1);
-  useEffect(() => {
-    allDrugData.map((data, index) =>
-      console.log(dayjs(data.whenEatDrugAtday).format("HH:mm"))
-    );
-    console.log(dayjs().get("month") + 1);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <DrugListDiv
       transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
@@ -27,7 +22,7 @@ const DrugList = ({ allDrugData }) => {
             <DrugDateAndWhenEat>
               <Date>{dayjs(data.dateID).format("DD")}</Date>
               <WhenEat>
-                <WhenEatBtn bgColor={"#3B82F6"}>
+                <WhenEatBtn bgColor={"#6366F1"}>
                   <Icon
                     src={require("../../icons/sun.png")}
                     name="sleep"
@@ -55,7 +50,13 @@ const DrugList = ({ allDrugData }) => {
                     ? dayjs(data.whenEatDrugAtnight).format("HH:mm")
                     : ""}
                 </WhenEatBtn>{" "}
-                <WhenEatBtn bgColor={"#30516E"}>
+                <WhenEatBtn
+                  bgColor={
+                    data.whenEatDrugAtsleep !== ""
+                      ? dayjs(data.whenEatDrugAtsleep).format("HH:mm")
+                      : ""
+                  }
+                >
                   <Icon
                     src={require("../../icons/half-moon.png")}
                     name="sleep"

@@ -87,6 +87,8 @@ const Header = styled.div`
     border: none;
     cursor: pointer;
     color: #6e7986;
+    padding: 0;
+    margin-left: 10px;
   }
 `;
 

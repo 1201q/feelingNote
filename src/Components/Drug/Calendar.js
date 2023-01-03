@@ -42,7 +42,6 @@ const Calendar = ({ allDrugData }) => {
     for (let i = F(selectMonthStart, "DD"); i <= F(selectMonthEnd, "DD"); i++) {
       arr.push(i);
     }
-    console.log(arr.length);
   };
 
   const calenar = () => {
@@ -85,14 +84,16 @@ const Calendar = ({ allDrugData }) => {
           <Day>
             <DayDate
               bgColor={
-                Istoday === true && arr[i] === today.get("date") ? "red" : ""
+                Istoday === true && arr[i] === today.get("date")
+                  ? "rgba(255,0,64, 0.9)"
+                  : ""
               }
               fontColor={
                 Istoday === true && arr[i] === today.get("date") ? "white" : ""
               }
             >
               {arr[i]}
-            </DayDate>{" "}
+            </DayDate>
             {typeof DrugArr.filter(
               (data) => dayjs(data.dateID).get("date") === arr[i]
             )[0] == "undefined" ? (
@@ -135,7 +136,9 @@ const Calendar = ({ allDrugData }) => {
           <Day>
             <DayDate
               bgColor={
-                Istoday === true && arr[i] === today.get("date") ? "red" : ""
+                Istoday === true && arr[i] === today.get("date")
+                  ? "rgba(255,0,64, 0.9)"
+                  : ""
               }
               fontColor={
                 Istoday === true && arr[i] === today.get("date") ? "white" : ""
@@ -193,7 +196,11 @@ const Calendar = ({ allDrugData }) => {
   };
 
   return (
-    <CalendarDiv>
+    <CalendarDiv
+      transition={{ type: "spring", duration: 0.4, delay: 0.2 }}
+      initial={{ height: "100%", opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+    >
       <Header>
         {F(selectDay, "YY")}년 {F(selectDay, "M")}월
         <span>
@@ -219,7 +226,7 @@ const Calendar = ({ allDrugData }) => {
   );
 };
 
-const CalendarDiv = styled.div`
+const CalendarDiv = styled(motion.div)`
   -webkit-tap-highlight-color: transparent;
   display: flex;
   flex-direction: column;
@@ -262,6 +269,8 @@ const Header = styled(motion.div)`
     border: none;
     cursor: pointer;
     color: #6e7986;
+    padding: 0;
+    margin-left: 10px;
   }
 `;
 
@@ -279,11 +288,11 @@ const Week = styled.div`
 `;
 
 const Day = styled.div`
-  width: 15%;
-  min-width: 30px;
-  max-width: 30px;
-  min-height: 30px;
-  max-height: 30px;
+  width: 30px;
+  max-width: 34px;
+  min-width: 34px;
+  min-height: 34px;
+  max-height: 34px;
 
   border-radius: 100%;
 
@@ -291,7 +300,7 @@ const Day = styled.div`
   margin: 9px;
   background-color: ${(props) => props.bgColor};
   color: ${(props) => (props.fontColor ? props.fontColor : "gray")};
-  font-weight: 100;
+  font-weight: 200;
   font-size: 18px;
   cursor: pointer;
 `;
@@ -302,10 +311,10 @@ const DayDate = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-width: 30px;
-  max-width: 30px;
-  min-height: 30px;
-  max-height: 30px;
+  min-width: 34px;
+  max-width: 34px;
+  min-height: 34px;
+  max-height: 34px;
 
   border-radius: 100%;
   text-align: center;
@@ -318,8 +327,8 @@ const DateHeader = styled.div`
   justify-content: center;
   align-items: center;
   width: 15%;
-  min-width: 30px;
-  max-width: 30px;
+  max-width: 34px;
+  min-width: 34px;
   min-height: 30px;
   max-height: 30px;
   border: none;
@@ -330,16 +339,12 @@ const DateHeader = styled.div`
 `;
 
 const WhenEat = styled.div`
-  min-width: 22px;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: center;
   padding-top: 4px;
-
   @media screen and (max-width: 768px) {
-    min-width: 22px;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
   }
 `;
 
@@ -354,6 +359,7 @@ const WhenEatDot = styled.div`
   border: none;
   font-size: 1px;
   font-weight: 800;
+  margin: 0px 1px;
   background-color: ${(props) => props.bgColor};
 `;
 
